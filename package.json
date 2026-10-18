@@ -1,0 +1,9 @@
+{
+  "name": "aryana",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix aryana-react run dev -- --open",
+    "build": "npm --prefix aryana-react run build",
+    "preview": "npm --prefix aryana-react run preview -- --open"
+  }
+}
