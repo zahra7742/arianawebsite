@@ -52,7 +52,7 @@ export default function Goals() {
         .from(q('.gl-lead'), { autoAlpha: 0, y: 30, duration: 0.9 }, 1.4)
         .from(q('.gl-note'), { autoAlpha: 0, y: 24, duration: 0.8 }, 1.95)
         .from(q('.gl-cta'), { autoAlpha: 0, y: 16, scale: 0.92, duration: 0.8 }, 2.5)
-        .from(q('.gl-bank'), { autoAlpha: 0, y: 40, duration: 1.1 }, 3.1) // only once the button has settled, so the two never overlap
+        .from(q('.gl-bank-wrap'), { autoAlpha: 0, y: 40, duration: 1.1 }, 3.1) // only once the button has settled, so the two never overlap
         .to({}, { duration: 3.6 }, 4.2) // everything is in place by 4.2: the finished screen rests for a moment before the page scrolls on
     }, section)
     return () => ctx.revert()
@@ -74,7 +74,9 @@ export default function Goals() {
           <a href="#app" className="gl-cta">دانلود اپلیکیشن</a>
 
           {/* a bank card (drawn in CSS, so it stays sharp at any size) in place of the old glass box */}
-          <div className="gl-bank" aria-hidden="true">
+          <div className="gl-bank-wrap" aria-hidden="true">
+            <div className="gl-shadow" />
+          <div className="gl-bank">
             <div className="gl-bank-top"><Icon name="logo" /><b>AryanaPay</b></div>
             <div className="gl-bank-mid">
               <i className="gl-chip" />
@@ -85,6 +87,7 @@ export default function Goals() {
               <span>ARIANA PAY</span>
               <i className="gl-mc"><b /><b /></i>
             </div>
+          </div>
           </div>
         </div>
       </section>
