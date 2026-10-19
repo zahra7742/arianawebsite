@@ -1,7 +1,6 @@
 import Icon from './Icon.jsx'
 import { footerColumns, legalLinks, socials } from '../data/content.js'
-import ftArt from '../assets/photos/ft-art.jpg'
-import ftLogo from '../assets/photos/ft-logo.png'
+import ftLogo from '../assets/logo/aryana-logo.png'
 import ftCbi from '../assets/photos/ft-cbi.png'
 import ftEnamad from '../assets/photos/ft-enamad.png'
 
@@ -9,10 +8,9 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="ft-top">
-        <img className="ft-art" src={ftArt} alt="" aria-hidden="true" loading="lazy" />
         <div className="container ft-grid">
           <div className="ft-brand">
-            <a href="#top" className="ft-logo" aria-label="AryanaPay"><img src={ftLogo} alt="AryanaPay" width="158" height="42" /></a>
+            <a href="#top" className="ft-logo" aria-label="Aryana"><img src={ftLogo} alt="Aryana" width="158" height="45" /></a>
             <p>آریانا با هدف فراهم کردن دسترسی ساده، سریع و امن به خدمات مالی دیجیتال، تجربه‌ای مطمئن و قابل اعتماد برای مدیریت امور مالی روزمره شما ارائه می‌دهد.</p>
             <div className="social">
               {socials.map(({ icon, label }) => (

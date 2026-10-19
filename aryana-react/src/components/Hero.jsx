@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Icon from './Icon.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import cbiLogo from '../assets/photos/ft-cbi.png'
+import logoLight from '../assets/logo/aryana-logo-light.png'
 import heroPhoto from '../assets/photos/hero/tehran-hero.webp'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -41,7 +42,7 @@ function Photo({ src, className }) {
 function BankCard() {
   return (
     <div className="rv-bank" aria-hidden="true">
-      <div className="rv-bank-top"><Icon name="logo" /><b>AryanaPay</b></div>
+      <div className="rv-bank-top"><img src={logoLight} alt="" /></div>
       <div className="rv-bank-mid">
         <i className="rv-chip" />
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M8 7c2.5 3 2.5 7 0 10M12 5c4 4 4 10 0 14M16 3c5.5 5 5.5 13 0 18" /></svg>
@@ -391,7 +392,7 @@ export default function Hero() {
           <div className="rv-next-head">
             <h2>مدیریت پول، به شکلی تازه</h2>
             <p>هوشمندانه خرج کنید، سریع انتقال دهید و پس‌اندازتان را رشد دهید — همه با آریانا کارت.</p>
-            <a href="#contact" className="rv-btn">دریافت آریانا کارت</a>
+            <a href="#app" className="rv-btn">دریافت آریانا کارت</a>
           </div>
 
           <div className="rv-cards">

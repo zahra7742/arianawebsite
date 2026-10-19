@@ -3891,7 +3891,7 @@ section {
   --cw: clamp(230px, 24vw, 310px);
   position: relative;
   width: var(--cw);
-  margin-top: clamp(80px, 15vh, 150px); /* lower, with room to float */
+  margin-top: clamp(104px, 20vh, 190px); /* lower, with room to float */
 }
 .gl-bank {
   width: 100%;
@@ -4048,7 +4048,7 @@ section {
 }
 @media (max-height: 800px) {
   .gl-bank-wrap {
-    margin-top: 76px;
+    margin-top: 108px;
     --cw: clamp(210px, 22vw, 270px);
   }
 }
@@ -4086,7 +4086,7 @@ section {
     font-size: 15px;
   }
   .gl-bank-wrap {
-    margin-top: 40px; /* the card is tilted and floats, so it needs more room than it seems */
+    margin-top: 54px; /* the card is tilted and floats, so it needs more room than it seems */
     --cw: clamp(150px, 20vw, 200px);
   }
 }
@@ -4167,4 +4167,664 @@ section {
   .app-phones-3d {
     animation: none;
   }
+}
+
+/* the Aryana logo files (assets/logo): header, bank cards, footer */
+.brand img {
+  display: block;
+  height: 34px;
+  width: auto;
+  transition: filter 0.3s ease;
+}
+/* over the hero photo the header is light: the navy logo turns white */
+.site-header.on-hero .brand img {
+  filter: brightness(0) invert(1);
+}
+@media (max-width: 760px) {
+  .brand img {
+    height: 30px;
+  }
+}
+.rv-bank-top img,
+.gl-bank .gl-bank-top img {
+  display: block;
+  width: 46cqw;
+  height: auto;
+}
+img.gl-wm {
+  height: auto;
+  opacity: 0.07;
+}
+
+/* the Aryana card pair (brandbook): front over back, floating together */
+.gl-cards {
+  position: relative;
+  /* hovers: it drifts up and a little sideways and sways, slowly (the translate and rotate properties are
+     separate from the transform that the scroll reveal uses) */
+  animation: gl-float 7s ease-in-out infinite;
+  will-change: translate, rotate;
+}
+.gl-back {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  container-type: inline-size;
+  direction: ltr;
+  border-radius: calc(var(--cw) * 0.06);
+  background: linear-gradient(160deg, #1f4474 0%, #183762 60%, #142f52 100%);
+  box-shadow: 0 10px 22px rgba(18, 41, 74, 0.2);
+  transform: translate(-15%, -16%) rotate(-11deg);
+  color: #fff;
+}
+.gl-stripe {
+  position: absolute;
+  inset-inline: 0;
+  top: 13%;
+  height: 19%;
+  background: #1c1c1c;
+}
+/* the big faint "A" mark behind the card's front face */
+.gl-wm {
+  position: absolute;
+  right: -8cqw;
+  top: -12cqw;
+  width: 78cqw;
+  pointer-events: none;
+}
+.gl-bank .gl-bank-num {
+  font-size: 8.6cqw;
+}
+
+/* ===== Articles ("Insights"): a dark band with gradient covers ===== */
+.ar {
+  margin-top: 70px;
+  padding: 0 0 64px;
+  color: var(--navy-2);
+}
+.ar-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 34px;
+}
+.ar-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid rgba(225, 156, 38, 0.6);
+  border-radius: 8px;
+  background: rgba(225, 156, 38, 0.12);
+  color: #a96d0a;
+  font-size: 12px;
+  font-weight: 700;
+}
+.ar-head h2 {
+  margin: 14px 0 8px;
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--navy-2);
+}
+.ar-head p {
+  max-width: 460px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.ar-all {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  transition: color 0.2s ease, gap 0.25s ease;
+}
+.ar-all svg {
+  width: 14px;
+  height: 14px;
+  transform: scaleX(-1); /* the arrow points the way the text reads (right to left) */
+}
+.ar-all:hover {
+  color: var(--blue);
+  gap: 10px;
+}
+.ar-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 40px) / 3);
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  direction: rtl;
+  /* room above and below for the hover lift: a scroller clips whatever leaves it, so the card must not leave it */
+  padding-block: 12px 8px;
+  margin-block: -12px -8px;
+}
+.ar-track::-webkit-scrollbar {
+  display: none;
+}
+.ar-track.dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+.ar-card {
+  scroll-snap-align: start;
+  display: block;
+  color: inherit;
+}
+.ar-cover {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 22px;
+  border: 1px solid rgba(26, 59, 102, 0.12);
+  border-radius: 16px;
+  color: #fff;
+  isolation: isolate;
+  transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.24, 1), border-color 0.3s ease;
+}
+/* the soft aurora behind each cover */
+.ar-cover::before {
+  content: '';
+  position: absolute;
+  inset: -30%;
+  z-index: -1;
+  filter: blur(34px);
+  transition: transform 0.9s cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+.ar-cover.a1::before {
+  background:
+    radial-gradient(40% 50% at 18% 20%, rgba(244, 128, 52, 0.85), transparent 70%),
+    radial-gradient(45% 55% at 80% 85%, rgba(225, 156, 38, 0.6), transparent 70%),
+    #1a2c4a;
+}
+.ar-cover.a2::before {
+  background:
+    radial-gradient(40% 45% at 62% 8%, rgba(60, 200, 160, 0.8), transparent 70%),
+    radial-gradient(45% 55% at 15% 90%, rgba(60, 110, 220, 0.6), transparent 70%),
+    #13284a;
+}
+.ar-cover.a3::before {
+  background:
+    radial-gradient(45% 55% at 85% 15%, rgba(120, 110, 240, 0.8), transparent 70%),
+    radial-gradient(45% 55% at 12% 88%, rgba(60, 130, 235, 0.65), transparent 70%),
+    #14264a;
+}
+.ar-cat {
+  align-self: flex-start;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(6px);
+  font-size: 11px;
+}
+.ar-cover img {
+  position: absolute;
+  left: 18px;
+  top: 16px;
+  width: 30px;
+  opacity: 0.55;
+}
+.ar-card:hover .ar-cover,
+.ar-card:focus-visible .ar-cover {
+  transform: translateY(-4px);
+  border-color: rgba(26, 59, 102, 0.3);
+  box-shadow: 0 16px 30px rgba(26, 59, 102, 0.2);
+}
+.ar-card:hover .ar-cover::before {
+  transform: scale(1.12) rotate(4deg);
+}
+.ar-meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 18px 0 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.ar-meta i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.ar-card h3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.8;
+  color: var(--navy-2);
+}
+.ar-card p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+@media (max-width: 980px) {
+  .ar-track {
+    grid-auto-columns: calc((100% - 20px) / 2);
+  }
+}
+@media (max-width: 640px) {
+  .ar {
+    padding: 48px 0 56px;
+  }
+  .ar-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .ar-track {
+    grid-auto-columns: 82%;
+    gap: 14px;
+  }
+}
+
+/* Footer: no colour at all, a light footer on the page background (the navy bar is gone) */
+.site-footer {
+  background: transparent;
+  color: var(--ink);
+}
+.ft-top {
+  background: transparent;
+  border-radius: 0;
+}
+.ft-bottom {
+  background: transparent;
+  border-top: 1px solid #e3e9f3;
+}
+.ft-bottom-in {
+  color: #33435f;
+}
+.ft-legal a {
+  border-inline-start-color: #d9e1ee;
+}
+.ft-legal a:hover {
+  color: var(--blue);
+}
+.ft-copy {
+  color: var(--muted);
+}
+.ft-lang {
+  border-inline-start-color: #d9e1ee;
+}
+.ft-lang .globe,
+.ft-lang select {
+  color: var(--navy-2);
+}
+.ft-lang select {
+  border-color: #c9d3e3;
+}
+.ft-lang .chev {
+  color: var(--navy-2);
+}
+
+/* phones: the download button sits on the right (the start side), and the cards a little lower */
+@media (max-width: 760px) {
+  .gl-cta {
+    align-self: flex-start;
+  }
+}
+@media (max-width: 760px) and (min-height: 700px) {
+  .gl-bank-wrap {
+    margin-top: clamp(124px, 22vh, 190px);
+  }
+}
+
+/* desktop: the card pair sits a little to the right, under the middle of the headline and button */
+@media (min-width: 981px) {
+  .gl-bank-wrap {
+    right: -38px; /* the wrapper is position: relative, so a negative right moves it to the right */
+  }
+}
+
+/* ===== Showcase: a tilted stack of app screens, with the text beside it and previous / next ===== */
+.sc {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr; /* RTL: the text is on the right, the stack on the left */
+  align-items: center;
+  gap: 40px;
+  margin-top: 90px;
+}
+.sc-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border: 1px solid rgba(225, 156, 38, 0.6);
+  border-radius: 8px;
+  background: rgba(225, 156, 38, 0.12);
+  color: #a96d0a;
+  font-size: 12px;
+  font-weight: 700;
+}
+.sc-text h2 {
+  margin: 14px 0 10px;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 800;
+  line-height: 1.5;
+  color: var(--navy-2);
+  animation: sc-in 0.6s cubic-bezier(0.22, 0.8, 0.24, 1) both;
+}
+.sc-text p {
+  max-width: 440px;
+  font-size: 14px;
+  line-height: 2;
+  color: var(--muted);
+  animation: sc-in 0.6s cubic-bezier(0.22, 0.8, 0.24, 1) 0.08s both;
+}
+@keyframes sc-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+.sc-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+}
+.sc-nav button,
+.sc-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+.sc-nav button:hover,
+.sc-open:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.sc-nav svg {
+  width: 14px;
+  height: 14px;
+}
+.sc-nav button:first-child svg {
+  transform: scaleX(-1);
+}
+.sc-open {
+  margin-inline-start: auto;
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.sc-open:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.sc-stage {
+  position: relative;
+  height: 400px;
+  perspective: 1600px;
+  direction: ltr;
+}
+.sc-stack {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(380px, 86%);
+  aspect-ratio: 16 / 10;
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) rotateX(50deg) rotateZ(-34deg);
+}
+.sc-card {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid rgba(18, 41, 74, 0.28);
+  border-radius: 14px;
+  background: #0f1d33;
+  box-shadow: 22px 24px 40px rgba(18, 41, 74, 0.28);
+  /* --p: 0 is the front screen; the ones behind it step back, down and aside, and fade a little */
+  transform: translate3d(calc(var(--p) * -34px), calc(var(--p) * 34px), calc(var(--p) * -46px));
+  opacity: calc(1 - var(--p) * 0.22);
+  z-index: calc(10 - var(--p));
+  transition: transform 0.8s cubic-bezier(0.22, 0.8, 0.24, 1), opacity 0.6s ease;
+}
+.sc-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+@media (max-width: 860px) {
+  .sc {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-top: 60px;
+  }
+  .sc-stage {
+    order: 2;
+    height: 300px;
+  }
+  .sc-open {
+    margin-inline-start: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sc-text h2,
+  .sc-text p {
+    animation: none;
+  }
+  .sc-card {
+    transition: none;
+  }
+}
+
+/* the tilted stack must stay inside its own area: no sideways overflow, and room below it */
+.sc {
+  overflow-x: clip;
+  margin-bottom: 70px;
+}
+.sc-stage {
+  height: 440px;
+  perspective: none;
+}
+/* a messy pile: nearly flat, every screen thrown down at its own angle and not quite on top of the others */
+.sc-stack {
+  width: min(340px, 82%);
+  transform: translate(-50%, -50%);
+}
+.sc-card {
+  transform: translate(0, 0) rotate(-1.5deg);
+  opacity: 1;
+  box-shadow: 0 14px 30px rgba(18, 41, 74, 0.26);
+  border-radius: 12px;
+  transition: transform 0.9s cubic-bezier(0.22, 0.8, 0.24, 1), box-shadow 0.9s ease;
+}
+.sc-card.p0 { transform: translate(6px, -4px) rotate(-1.5deg); z-index: 3; }
+.sc-card.p1 { transform: translate(-48px, 22px) rotate(-12deg); z-index: 2; }
+.sc-card.p2 { transform: translate(40px, 38px) rotate(9deg); z-index: 1; }
+.sc-card:not(.p0) img {
+  filter: brightness(0.9);
+}
+@media (max-width: 860px) {
+  .sc-stage {
+    height: 360px;
+  }
+  .sc-stack {
+    width: min(270px, 74%);
+  }
+  .sc-card.p1 { transform: translate(-32px, 16px) rotate(-12deg); }
+  .sc-card.p2 { transform: translate(28px, 28px) rotate(9deg); }
+}
+
+/* the pile's cards hold content (an icon, a title and a text) instead of pictures */
+.sc-stage {
+  direction: rtl;
+}
+.sc-stack {
+  width: min(330px, 84%);
+  aspect-ratio: 1.25;
+}
+.sc-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 24px 22px;
+  border: 1px solid #dfe6f1;
+  border-radius: 18px;
+  background: #fff;
+  overflow: visible;
+}
+.sc-card.p1 {
+  background: #f1f5fb;
+}
+.sc-card.p2 {
+  background: #fbf4e6;
+}
+.sc-card:not(.p0) > * {
+  opacity: 0.55;
+}
+.sc-ic {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #e7efff;
+  color: var(--blue);
+}
+.sc-ic.yellow {
+  background: #fdf0d2;
+  color: #b97a0c;
+}
+.sc-ic.green {
+  background: #e1f6ea;
+  color: #1f8f55;
+}
+.sc-ic svg {
+  width: 24px;
+  height: 24px;
+}
+.sc-card h3 {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.6;
+  color: var(--navy-2);
+}
+.sc-card p {
+  font-size: 13px;
+  line-height: 1.95;
+  color: var(--muted);
+}
+.sc-card.p0 > * {
+  transition: opacity 0.6s ease 0.15s;
+}
+@media (max-width: 860px) {
+  .sc-stack {
+    width: min(290px, 78%);
+    aspect-ratio: 1.15;
+  }
+  .sc-card {
+    padding: 20px;
+  }
+}
+
+/* every card has its own colour (it keeps it wherever it lies in the pile) */
+.sc-card.p1,
+.sc-card.p2 {
+  background: inherit;
+}
+.sc-card.blue {
+  background: linear-gradient(150deg, #dfeaff, #c4d8fb);
+  border-color: #b4cbf5;
+}
+.sc-card.yellow {
+  background: linear-gradient(150deg, #ffeec2, #fbd77f);
+  border-color: #f2c765;
+}
+.sc-card.green {
+  background: linear-gradient(150deg, #d9f5e5, #b3e8cb);
+  border-color: #9fdcba;
+}
+.sc-card .sc-ic {
+  background: rgba(255, 255, 255, 0.75);
+}
+.sc-card h3 {
+  color: #12294a;
+}
+.sc-card p {
+  color: #3b4b66;
+}
+/* the cards behind stay vivid, only a little softer */
+.sc-card:not(.p0) > * {
+  opacity: 0.7;
+}
+
+/* desktop: the cards on the right, the text on the left */
+@media (min-width: 861px) {
+  .sc {
+    grid-template-columns: 1.1fr 1fr;
+  }
+  .sc-stage {
+    order: -1;
+  }
+}
+
+/* the pile turns by itself: small dots show which card is in front (the previous / next buttons are gone) */
+.sc-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+}
+.sc-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #cfd8e6;
+  transition: width 0.4s cubic-bezier(0.22, 0.8, 0.24, 1), background-color 0.4s ease;
+}
+.sc-dots i.on {
+  width: 28px;
+  background: var(--navy);
+}
+.sc-text .sc-open {
+  margin-top: 22px;
+  margin-inline-start: 0;
+  width: fit-content;
+}
+.sc-text .sc-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.sc-text .sc-open svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
 }

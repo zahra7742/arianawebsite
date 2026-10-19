@@ -3,11 +3,11 @@ import Hero from './components/Hero.jsx'
 import Goals from './components/Goals.jsx'
 import Journey from './components/Journey.jsx'
 import AppBanner from './components/AppBanner.jsx'
+import Showcase from './components/Showcase.jsx'
 import Audience from './components/Audience.jsx'
 import Trust from './components/Trust.jsx'
 import Faq from './components/Faq.jsx'
 import Articles from './components/Articles.jsx'
-import ContactForm from './components/ContactForm.jsx'
 import Footer from './components/Footer.jsx'
 import { useEffect } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -34,8 +34,8 @@ export default function App() {
         <Goals />
         <Journey />
         <AppBanner />
+        <Showcase />
         <Audience />
-        <ContactForm />
         <Trust />
         <Faq />
         <Articles />

@@ -3,6 +3,8 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Icon from './Icon.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
+import logoLight from '../assets/logo/aryana-logo-light.png'
+import markLight from '../assets/logo/aryana-mark-light.png'
 import photoA from '../assets/photos/hero/tehran-alborz.webp'
 import lineArt from '../assets/photos/hero/tehran-alborz-line.webp' // the same skyline as a colourless line drawing
 
@@ -37,7 +39,7 @@ export default function Goals() {
           trigger: section,
           refreshPriority: 2,
           start: `top top+=${HEADER_H}`,
-          end: () => `+=${window.innerHeight * 3}`,
+          end: () => `+=${window.innerHeight * 2.4}`,
           pin: true,
           scrub: 1,
           anticipatePin: 1,
@@ -53,7 +55,7 @@ export default function Goals() {
         .from(q('.gl-note'), { autoAlpha: 0, y: 24, duration: 0.8 }, 1.95)
         .from(q('.gl-cta'), { autoAlpha: 0, y: 16, scale: 0.92, duration: 0.8 }, 2.5)
         .from(q('.gl-bank-wrap'), { autoAlpha: 0, y: 40, duration: 1.1 }, 3.1) // only once the button has settled, so the two never overlap
-        .to({}, { duration: 3.6 }, 4.2) // everything is in place by 4.2: the finished screen rests for a moment before the page scrolls on
+        .to({}, { duration: 2 }, 4.2) // everything is in place by 4.2: the finished screen rests for a moment before the page scrolls on
     }, section)
     return () => ctx.revert()
   }, [reduce])
@@ -74,7 +76,7 @@ export default function Goals() {
           <a href="#app" className="gl-cta">دانلود اپلیکیشن</a>
 
           {/* the Aryana card from the brandbook, drawn in CSS: the front over the back (with its magnetic stripe),
-              floating together. The mark below is an approximation of the Aryana logo: swap it for the real SVG. */}
+              floating together. */}
           <div className="gl-bank-wrap" aria-hidden="true">
             <div className="gl-shadow" />
             <div className="gl-cards">
@@ -82,11 +84,8 @@ export default function Goals() {
                 <i className="gl-stripe" />
               </div>
               <div className="gl-bank">
-                <svg className="gl-wm" viewBox="0 0 100 100" fill="none"><path d="M50 6 L94 94 H72 L50 48 L28 94 H6 Z" /><path d="M4 68 C30 40 62 92 98 52" /></svg>
-                <div className="gl-bank-top">
-                  <svg viewBox="0 0 44 36" fill="currentColor"><path d="M22 1 L42 34 H31 L22 18 L13 34 H2 Z" /><path d="M1 25 C14 13 26 31 43 16" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>
-                  <b>Aryana</b>
-                </div>
+                <img className="gl-wm" src={markLight} alt="" />
+                <div className="gl-bank-top"><img src={logoLight} alt="" /></div>
                 <div className="gl-bank-mid">
                   <i className="gl-chip" />
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M8 7c2.5 3 2.5 7 0 10M12 5c4 4 4 10 0 14M16 3c5.5 5 5.5 13 0 18" /></svg>

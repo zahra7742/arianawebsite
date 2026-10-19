@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Icon from './Icon.jsx'
+import logo from '../assets/logo/aryana-logo.png'
 import useActiveSection from '../hooks/useActiveSection.js'
 import { navLinks } from '../data/content.js'
 
@@ -25,7 +26,7 @@ export default function Header() {
     <header className={onHero ? 'site-header on-hero' : 'site-header'} id="top">
       <div className="container header-inner">
         <div className="brand-wrap">
-          <a href="#top" className="brand"><Icon name="logo" className="logo" /> AryanaPay</a>
+          <a href="#top" className="brand" aria-label="Aryana"><img src={logo} alt="Aryana" width="120" height="34" /></a>
           <a href="#" className="lang-btn" aria-label="English">EN</a>
         </div>
 
