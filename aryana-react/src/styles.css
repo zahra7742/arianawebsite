@@ -118,7 +118,7 @@ svg {
 }
 /* over the top of the hero: the same blue as the hero photo, flat, with light text */
 .site-header.on-hero {
-  background: #3d84d4; /* top colour of the hero photo (see .rv-photo.placeholder.hero) */
+  background: #2369c5; /* top-left colour of the hero photo; only used where the photo is not under the header (phones) */
   backdrop-filter: none;
   border-bottom-color: transparent;
 }
@@ -2903,6 +2903,18 @@ section {
   height: 100%;
   object-fit: cover;
 }
+/* the Tehran skyline sits on the left of the image and the right half is open sky, which is where the (RTL) copy goes */
+.rv-photo.hero {
+  object-position: 0% 50%;
+}
+/* a light blue shade on the copy side, for the white headline */
+.rv-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to left, rgba(10, 50, 140, 0.16), rgba(10, 50, 140, 0.04) 55%, transparent 80%);
+  pointer-events: none;
+}
 /* placeholders until real photos are set in PHOTOS (Hero.jsx) */
 .rv-photo.placeholder.hero {
   background:
@@ -2925,14 +2937,14 @@ section {
 /* hero copy, over the photo */
 .rv-copy {
   position: absolute;
-  top: calc(73px + (100svh - 73px) * 0.12);
+  top: calc(73px + (100svh - 73px) * 0.05);
   left: 0;
   right: 0;
   z-index: 3;
   color: var(--rv-on-photo);
 }
 .rv-copy h1 {
-  font-size: clamp(46px, 7.4vw, 112px);
+  font-size: clamp(40px, 4.4vw, 68px);
   font-weight: 800;
   line-height: 1.1;
   text-shadow: 0 4px 30px rgba(10, 30, 60, 0.18);
@@ -3027,11 +3039,11 @@ section {
   position: absolute;
   inset: 0;
   display: grid;
-  align-content: end;
+  align-content: center;
   justify-items: center;
-  padding-bottom: 30%;
   border-radius: 22px;
   border: 1.5px solid rgb(255 255 255 / calc(0.75 * var(--outline)));
+  container-type: inline-size; /* the bank card inside scales with the frame */
   transform-origin: top center;
 }
 .rv-balance {
@@ -3288,4 +3300,122 @@ section {
 }
 .rv-static .rv-frame {
   --outline: 0;
+}
+
+/* the bank card in the big outlined frame (it fills the whole frame; sizes in cqw of the frame) */
+.rv-bank {
+  position: absolute;
+  inset: 0; /* fills the whole frame, top to bottom */
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  padding: 10cqw 9cqw 9cqw;
+  border-radius: inherit;
+  color: #fff;
+  background:
+    radial-gradient(90% 55% at 85% 8%, rgba(120, 170, 255, 0.35), transparent 70%),
+    linear-gradient(165deg, #214b86 0%, #12294a 55%, #0b1b33 100%);
+  direction: ltr;
+  text-shadow: none;
+}
+.rv-bank-top {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  font-family: 'Poppins', sans-serif;
+  font-size: 8cqw;
+  font-weight: 700;
+}
+.rv-bank-top svg {
+  width: 10cqw;
+  height: 10cqw;
+  color: #fff;
+}
+.rv-bank-mid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14cqw;
+}
+.rv-chip {
+  width: 17cqw;
+  height: 12.5cqw;
+  border-radius: 2.4cqw;
+  background: linear-gradient(135deg, #f3dc9c, #c99a3d 55%, #e9c776);
+  box-shadow: inset 0 0 0 0.3cqw rgba(0, 0, 0, 0.18);
+}
+.rv-bank-mid svg {
+  width: 11cqw;
+  height: 11cqw;
+  opacity: 0.85;
+}
+.rv-bank-num {
+  align-self: end;
+  display: grid;
+  gap: 2.4cqw;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11.5cqw;
+  font-weight: 600;
+  letter-spacing: 0.5cqw;
+}
+.rv-bank-foot {
+  display: grid;
+  margin-top: 6cqw;
+  font-size: 7cqw;
+  font-weight: 600;
+}
+.rv-bank-foot small {
+  font-size: 4cqw;
+  opacity: 0.65;
+  letter-spacing: 0.4cqw;
+}
+/* on the phone hero the white trust strip sits over the bottom of the card, so leave room for it */
+.rv-hero-card .rv-bank {
+  padding-bottom: 26cqw;
+}
+
+/* the golden wave of the hero photo gets light travelling along it */
+.rv-wave {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.rv-wave path {
+  fill: none;
+  stroke: url(#rv-wave-fade);
+  stroke-linecap: round;
+  /* two short bright runs per lap; pathLength is 1000, so 500 units of offset is half a lap */
+  stroke-dasharray: 90 410;
+  animation: rv-wave-flow 7s linear infinite;
+}
+.rv-wave path.b {
+  stroke: url(#rv-wave-fade-b);
+  animation-duration: 8.5s;
+  animation-delay: -3.2s; /* out of step with the golden line */
+}
+.rv-wave-glow {
+  stroke-width: 22;
+  opacity: 0.55;
+  filter: blur(9px);
+}
+.rv-wave-core {
+  stroke-width: 4;
+  opacity: 0.95;
+}
+@keyframes rv-wave-flow {
+  from {
+    stroke-dashoffset: 500;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rv-wave path {
+    animation: none;
+    stroke-dasharray: none;
+    opacity: 0;
+  }
 }

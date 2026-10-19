@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Icon from './Icon.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import cbiLogo from '../assets/photos/ft-cbi.png'
+import heroPhoto from '../assets/photos/hero/tehran-hero.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -12,7 +13,7 @@ const HEADER_H = 73 // height of the sticky site header
 // PHOTOS: set these to imported image files to replace the placeholder gradients, e.g.
 //   import heroPhoto from '../assets/photos/hero/person.jpg'  →  const PHOTOS = { hero: heroPhoto, … }
 // hero: full-screen, at least ~1920px wide; side cards: portrait, at least ~600×850px.
-const PHOTOS = { hero: null, sideA: null, sideB: null }
+const PHOTOS = { hero: heroPhoto, sideA: null, sideB: null }
 
 // ILLUSTRATIVE DATA: balances and transactions below are sample figures, not real AryanaPay data.
 const SIDE_CARDS = [
@@ -34,6 +35,51 @@ function Photo({ src, className }) {
   return src
     ? <img className={`rv-photo ${className}`} src={src} alt="" />
     : <div className={`rv-photo ${className} placeholder`} />
+}
+
+// The bank card shown in the big outlined frame: a vertical card, standing on the hero photo
+function BankCard() {
+  return (
+    <div className="rv-bank" aria-hidden="true">
+      <div className="rv-bank-top"><Icon name="logo" /><b>AryanaPay</b></div>
+      <div className="rv-bank-mid">
+        <i className="rv-chip" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M8 7c2.5 3 2.5 7 0 10M12 5c4 4 4 10 0 14M16 3c5.5 5 5.5 13 0 18" /></svg>
+      </div>
+      <div className="rv-bank-num"><span>1234 5678</span><span>9012 3456</span></div>
+      <div className="rv-bank-foot"><small>VALID THRU</small><span>12/28</span></div>
+    </div>
+  )
+}
+
+// Light that flows along the golden wave of the hero photo. The SVG uses the photo's own pixel space and the same
+// cover/left-aligned fit as the image (xMinYMid slice), so the path stays on top of the photo's wave at any size.
+const WAVE = 'M-10 545 C12 546 77 542 120 548 C163 554 210 564 250 578 C290 592 327 614 360 630 C393 646 420 660 450 675 C480 690 508 708 540 722 C572 736 603 749 640 757 C677 765 720 770 760 771 C800 772 840 768 880 760 C920 752 963 732 1000 722 C1037 712 1067 706 1100 703 C1133 700 1163 703 1200 706 C1237 709 1300 719 1320 722'
+// the paler white-blue line under the golden one
+const WAVE_B = 'M-10 600 C5 602 53 608 80 614 C107 620 130 628 150 634 C170 640 175 642 200 653 C225 664 267 684 300 698 C333 712 367 724 400 736 C433 748 467 759 500 767 C533 775 567 781 600 786 C633 791 667 793 700 795 C733 797 767 799 800 797 C833 795 867 791 900 785 C933 779 967 768 1000 760 C1033 752 1067 744 1100 740 C1133 736 1167 735 1200 735 C1233 735 1283 739 1300 740'
+function WaveGlow() {
+  return (
+    <svg className="rv-wave" viewBox="0 0 1756 895" preserveAspectRatio="xMinYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="rv-wave-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1320" y2="0">
+          <stop offset="0" stopColor="#ffd27a" stopOpacity="0" />
+          <stop offset="0.12" stopColor="#ffe3a3" />
+          <stop offset="0.8" stopColor="#fff1c9" />
+          <stop offset="1" stopColor="#ffe3a3" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="rv-wave-fade-b" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1300" y2="0">
+          <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="0.1" stopColor="#ffffff" />
+          <stop offset="0.75" stopColor="#dff0ff" />
+          <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path className="rv-wave-glow" d={WAVE} pathLength="1000" />
+      <path className="rv-wave-core" d={WAVE} pathLength="1000" />
+      <path className="rv-wave-glow b" d={WAVE_B} pathLength="1000" />
+      <path className="rv-wave-core b" d={WAVE_B} pathLength="1000" />
+    </svg>
+  )
 }
 
 // Balance overlay shared by the hero frame and the cards
@@ -206,10 +252,10 @@ export default function Hero() {
           const r = document.createRange()
           r.selectNodeContents(q('.rv-copy h1')[0])
           const h1Left = r.getBoundingClientRect().left - s.left
-          const left = copy.left // container's left edge (the copy column is on the right)
-          w = Math.min((c.sh - HEADER_H) * 0.8 * (c.w / c.h), c.sw * 0.34, h1Left - left - 48)
-          cx = left + w / 2
-          top = HEADER_H + (c.sh - HEADER_H - w * (c.h / c.w)) / 2
+          // a bit smaller than before; just left of the middle of the screen and a little below its centre, clear of the headline
+          w = Math.min((c.sh - HEADER_H) * 0.64 * (c.w / c.h), c.sw * 0.28)
+          cx = Math.max(w / 2 + 24, Math.min(c.sw * 0.46, h1Left - 40 - w / 2))
+          top = (c.sh - w * (c.h / c.w)) / 2 + c.sh * 0.06
         }
         const h = w * (c.h / c.w)
         return { x: cx - w / 2, y: top, w, h, scale: w / c.w }
@@ -253,7 +299,7 @@ export default function Hero() {
         },
         { scale: 1, borderRadius: 22, x: 0, y: 0, '--outline': 0, duration: 1, ease: 'sine.out', immediateRender: true }, 1.8)
       // a gentle zoom-out of the photo while it closes in (it always still covers the whole stage)
-      tl.fromTo(q('.rv-clip .rv-photo'), { scale: 1.1 }, { scale: 1, duration: 2.8 }, 0)
+      tl.fromTo(q('.rv-clip .rv-photo, .rv-clip .rv-wave'), { scale: 1.1 }, { scale: 1, duration: 2.8 }, 0)
       // the next screen rises in once the photo has landed: heading first, then the side cards one by one
       tl.from(q('.rv-next-head > *'), { autoAlpha: 0, y: 50, stagger: 0.12, duration: 0.9 }, 2.3)
       // side cards: come in from the outer edges, travelling diagonally upward, zoomed out and tilted,
@@ -290,12 +336,13 @@ export default function Hero() {
       <section ref={stageRef} className={reduce || isPhone ? 'rv rv-static' : 'rv'} aria-labelledby="rv-title">
         <div className="rv-clip" aria-hidden="true">
           <Photo src={PHOTOS.hero} className="hero" />
+          <WaveGlow />
         </div>
 
         {/* phones: the big outlined card stays put on the blue hero (desktop animates the one inside the middle card) */}
         <div className="rv-hero-card" aria-hidden="true">
           <div className="rv-hero-card-in">
-            <Balance label="حساب شخصی" amount="۱۲٬۵۰۰٬۰۰۰ تومان" />
+            <BankCard />
             <div className="rv-hero-foot">
               <img src={cbiLogo} alt="" width="26" height="25" />
               <span>مجوز بانک مرکزی</span>
@@ -349,7 +396,7 @@ function MiddleSlot() {
     <div className="rv-slot">
       <Photo src={PHOTOS.hero} className="hero slot-photo" />
       <div className="rv-frame">
-        <Balance label="حساب شخصی" amount="۱۲٬۵۰۰٬۰۰۰ تومان" />
+        <BankCard />
       </div>
       <div className="rv-slot-foot">
         <img src={cbiLogo} alt="" width="26" height="25" />
