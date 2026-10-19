@@ -4828,3 +4828,27 @@ img.gl-wm {
   height: 14px;
   flex: none;
 }
+
+/* FAQ: no box and no picture, the accordion takes the full width of the page */
+.faq-card {
+  display: block;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+}
+.faq-card .section-title {
+  text-align: center;
+}
+.faq-card .acc {
+  width: 100%;
+  gap: 12px;
+}
+.faq-card .acc {
+  max-width: 860px;
+  margin-inline: auto;
+}
+
+/* the trust box now sits between the phone section and the app banner: more room around it */
+.trust {
+  margin-top: 70px;
+}

@@ -23,29 +23,34 @@ const GOALS = [
 // A full-width photo with a centred headline, a small glass "goal" card and the goal card.
 export default function Goals() {
   const reduce = useMediaQuery('(prefers-reduced-motion: reduce)')
+  const isPhone = useMediaQuery('(max-width: 760px)')
   const goal = GOALS[0]
   const sectionRef = useRef(null)
 
-  // the section is pinned: the photo stays put and, as the user scrolls down, the texts, button and card
-  // appear one by one on top of it (at the start only the photo is there)
+  // Desktop: the section is pinned: the photo stays put and, as the user scrolls down, the texts, button and card
+  // appear one by one on top of it (at the start only the photo is there).
+  // Phones: no pinned scrolling to push through; the same sequence plays by itself (on time, not on scroll) as soon as
+  // the section comes into view, and plays again each time it is reached again.
   useLayoutEffect(() => {
     if (reduce) return
     const section = sectionRef.current
     const ctx = gsap.context(() => {
       const q = gsap.utils.selector(section)
-      const tl = gsap.timeline({
-        defaults: { ease: 'power2.out' },
-        scrollTrigger: {
-          trigger: section,
-          refreshPriority: 2,
-          start: `top top+=${HEADER_H}`,
-          end: () => `+=${window.innerHeight * 2.4}`,
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
-      })
+      const tl = gsap.timeline(isPhone
+        ? { defaults: { ease: 'power2.out' }, paused: true }
+        : {
+          defaults: { ease: 'power2.out' },
+          scrollTrigger: {
+            trigger: section,
+            refreshPriority: 2,
+            start: `top top+=${HEADER_H}`,
+            end: () => `+=${window.innerHeight * 2.4}`,
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        })
       // the picture starts as a colourless line drawing and takes its colours while the texts come up.
       // the sketch is alone for a moment, then the texts follow one after another, and the colours finish with the card
       tl.fromTo(q('.gl-bg img.on'), { opacity: 0 }, { opacity: 1, ease: 'power1.inOut', duration: 3.7 }, 0.5)
@@ -56,9 +61,21 @@ export default function Goals() {
         .from(q('.gl-cta'), { autoAlpha: 0, y: 16, scale: 0.92, duration: 0.8 }, 2.5)
         .from(q('.gl-bank-wrap'), { autoAlpha: 0, y: 40, duration: 1.1 }, 3.1) // only once the button has settled, so the two never overlap
         .to({}, { duration: 2 }, 4.2) // everything is in place by 4.2: the finished screen rests for a moment before the page scrolls on
+      if (isPhone) {
+        tl.timeScale(1.15)
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top 65%',
+          end: 'bottom 15%',
+          onEnter: () => tl.restart(),
+          onEnterBack: () => tl.restart(),
+          onLeave: () => tl.progress(1).pause(),
+          onLeaveBack: () => tl.pause(0),
+        })
+      }
     }, section)
     return () => ctx.revert()
-  }, [reduce])
+  }, [reduce, isPhone])
 
   return (
     // React-owned wrapper: GSAP inserts its pin-spacer inside it, never in React's parent

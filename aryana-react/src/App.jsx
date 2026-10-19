@@ -33,10 +33,10 @@ export default function App() {
         <Hero />
         <Goals />
         <Journey />
+        <Trust />
         <AppBanner />
         <Showcase />
         <Audience />
-        <Trust />
         <Faq />
         <Articles />
       </main>

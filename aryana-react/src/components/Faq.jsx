@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { faqs } from '../data/content.js'
-import faqImg from '../assets/photos/faq.jpg'
 
 export default function Faq() {
   // Accordion: one answer open at a time; the height animates (grid rows 0fr -> 1fr, see .acc-a in styles.css)
@@ -41,9 +40,6 @@ export default function Faq() {
               )
             })}
           </div>
-        </div>
-        <div className="faq-art" aria-hidden="true">
-          <img src={faqImg} alt="" width="230" height="148" loading="lazy" />
         </div>
       </div>
     </section>
