@@ -1,8 +1,6 @@
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
-import About from './components/About.jsx'
-import Features from './components/Features.jsx'
-import Highlights from './components/Highlights.jsx'
+import Goals from './components/Goals.jsx'
 import Journey from './components/Journey.jsx'
 import AppBanner from './components/AppBanner.jsx'
 import Audience from './components/Audience.jsx'
@@ -11,19 +9,29 @@ import Faq from './components/Faq.jsx'
 import Articles from './components/Articles.jsx'
 import ContactForm from './components/ContactForm.jsx'
 import Footer from './components/Footer.jsx'
+import { useEffect } from 'react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useReveal from './hooks/useReveal.js'
 
 export default function App() {
   useReveal()
+
+  // the pinned sections measure the page once; after the window is resized (or the device mode is changed in the
+  // browser tools) re-measure them all, so none of them is left with a stale height and overlaps the next section
+  useEffect(() => {
+    let t
+    const onResize = () => { clearTimeout(t); t = setTimeout(() => ScrollTrigger.refresh(), 300) }
+    window.addEventListener('resize', onResize)
+    window.addEventListener('orientationchange', onResize)
+    return () => { clearTimeout(t); window.removeEventListener('resize', onResize); window.removeEventListener('orientationchange', onResize) }
+  }, [])
 
   return (
     <>
       <Header />
       <main>
         <Hero />
-        <About />
-        <Features />
-        <Highlights />
+        <Goals />
         <Journey />
         <AppBanner />
         <Audience />

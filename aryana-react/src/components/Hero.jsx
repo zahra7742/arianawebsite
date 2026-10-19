@@ -201,16 +201,40 @@ export default function Hero() {
         measure()
         document.fonts?.ready.then(measure)
         startLive()
-        const onResize = () => { measure(); stopLive(); startLive() }
+        // header colour, as on desktop: see-through with light text while the photo is under it, then it turns white
+        const onScroll = () => {
+          const over = stage.getBoundingClientRect().bottom > HEADER_H
+          document.documentElement.toggleAttribute('data-hero-pinned', over)
+          setCovers(over)
+        }
+        onScroll()
+        // the card animation replays every time the hero comes back into view: while it is off screen the
+        // animations are switched off (rv-reset), and removing the class starts them again from the beginning
+        const heroCard = q('.rv-hero-card')[0]
+        const io = new IntersectionObserver(([e]) => {
+          heroCard.classList.toggle('rv-reset', !e.isIntersecting)
+          stage.classList.toggle('rv-reset', !e.isIntersecting) // also restarts the download button's tremble
+        })
+        io.observe(heroCard)
+        const onResize = () => { measure(); stopLive(); startLive(); onScroll() }
         window.addEventListener('resize', onResize)
+        window.addEventListener('scroll', onScroll, { passive: true })
         const prev = cleanup
-        cleanup = () => { prev(); window.removeEventListener('resize', onResize) }
+        cleanup = () => {
+          prev()
+          io.disconnect()
+          heroCard.classList.remove('rv-reset')
+          stage.classList.remove('rv-reset')
+          window.removeEventListener('resize', onResize)
+          window.removeEventListener('scroll', onScroll)
+        }
         return
       }
       const tl = gsap.timeline({
         defaults: { ease: 'sine.inOut', force3D: true },
         scrollTrigger: {
           trigger: stage,
+          refreshPriority: 3, // the pins refresh in page order (hero, goals, journey), whatever order they were created in
           start: 'top top',
           end: () => `+=${window.innerHeight * 3}`,
           pin: true,
@@ -349,6 +373,11 @@ export default function Hero() {
               <i><Icon name="shield" /></i>
               <span>پرداخت امن</span>
             </div>
+          </div>
+          {/* a copy that falls over beside the standing card and lies on its side over the photo */}
+          <div className="rv-hero-fall">
+            <BankCard />
+            <div className="rv-hero-fall-photo"><Photo src={PHOTOS.hero} className="hero" /></div>
           </div>
         </div>
 

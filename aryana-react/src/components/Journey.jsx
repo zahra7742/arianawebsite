@@ -52,6 +52,7 @@ function PinnedJourney() {
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: section,
+        refreshPriority: 1,
         start: `top top+=${HEADER_H}`,
         end: () => `+=${window.innerHeight * 2}`,
         pin: true,
@@ -68,7 +69,7 @@ function PinnedJourney() {
 
   return (
     // React-owned wrapper: GSAP inserts its pin-spacer inside it, never in React's parent
-    <div className="jr-pin-wrap">
+    <div className="jr-pin-wrap" id="features-new">
       <section ref={sectionRef} className="jr-sec jr-pinned" aria-label="امکانات اپلیکیشن آریانا پی">
         <div className="container jr-stage">
           <div className="jr-line" aria-hidden="true">
@@ -95,7 +96,7 @@ function PinnedJourney() {
 // Desktop with reduced motion: the three stages as static alternating rows.
 function StaticJourney() {
   return (
-    <section className="container jr-sec jr-static" aria-label="امکانات اپلیکیشن آریانا پی">
+    <section className="container jr-sec jr-static" id="features-new" aria-label="امکانات اپلیکیشن آریانا پی">
       {journey.map((item, i) => (
         <div key={item.num} className={i % 2 ? 'jr-row flip' : 'jr-row'}>
           <StageText item={item} />
@@ -147,10 +148,20 @@ function MobilePinnedJourney() {
         defaults: { ease: 'power2.inOut', duration: MOVE },
         scrollTrigger: {
           trigger: section,
+          refreshPriority: 1,
           start: `top top+=${HEADER_H}`,
           end: () => `+=${window.innerHeight * 2}`,
           pin: true,
-          scrub: 0.6,
+          scrub: 1,
+          // a short scroll in either direction glides on to the next whole screen, so the user never has to
+          // drag the phone into place: every stage rests at k / (stages - 1) of the timeline
+          snap: {
+            snapTo: 1 / (journey.length - 1),
+            directional: true,
+            delay: 0.1,
+            duration: { min: 0.9, max: 1.7 },
+            ease: 'sine.inOut',
+          },
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: self => {
@@ -178,7 +189,7 @@ function MobilePinnedJourney() {
 
   return (
     // React-owned wrapper: GSAP inserts its pin-spacer inside it, never in React's parent
-    <div className="jr-pin-wrap">
+    <div className="jr-pin-wrap" id="features-new">
       <section ref={sectionRef} className="jr-sec jr-mpin" aria-label="امکانات اپلیکیشن آریانا پی">
         <div className="jr-mtexts">
           <div className="jr-mtexts-strip" ref={textsRef}>
@@ -223,7 +234,7 @@ function MobileJourney() {
   }, [])
 
   return (
-    <section className="container jr-sec jr-mobile" aria-label="امکانات اپلیکیشن آریانا پی">
+    <section className="container jr-sec jr-mobile" id="features-new" aria-label="امکانات اپلیکیشن آریانا پی">
       <div className="jr-msteps" aria-hidden="true">
         {journey.map((item, i) => (
           <span key={item.num} className={i === active ? 'on' : i < active ? 'done' : undefined}>
