@@ -73,21 +73,27 @@ export default function Goals() {
           <p className="gl-note">مبلغ‌ها و هدف‌های نشان‌داده‌شده نمونه هستند و فقط برای نمایش آورده شده‌اند.</p>
           <a href="#app" className="gl-cta">دانلود اپلیکیشن</a>
 
-          {/* a bank card (drawn in CSS, so it stays sharp at any size) in place of the old glass box */}
+          {/* the Aryana card from the brandbook, drawn in CSS: the front over the back (with its magnetic stripe),
+              floating together. The mark below is an approximation of the Aryana logo: swap it for the real SVG. */}
           <div className="gl-bank-wrap" aria-hidden="true">
             <div className="gl-shadow" />
-          <div className="gl-bank">
-            <div className="gl-bank-top"><Icon name="logo" /><b>AryanaPay</b></div>
-            <div className="gl-bank-mid">
-              <i className="gl-chip" />
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M8 7c2.5 3 2.5 7 0 10M12 5c4 4 4 10 0 14M16 3c5.5 5 5.5 13 0 18" /></svg>
+            <div className="gl-cards">
+              <div className="gl-back">
+                <i className="gl-stripe" />
+              </div>
+              <div className="gl-bank">
+                <svg className="gl-wm" viewBox="0 0 100 100" fill="none"><path d="M50 6 L94 94 H72 L50 48 L28 94 H6 Z" /><path d="M4 68 C30 40 62 92 98 52" /></svg>
+                <div className="gl-bank-top">
+                  <svg viewBox="0 0 44 36" fill="currentColor"><path d="M22 1 L42 34 H31 L22 18 L13 34 H2 Z" /><path d="M1 25 C14 13 26 31 43 16" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>
+                  <b>Aryana</b>
+                </div>
+                <div className="gl-bank-mid">
+                  <i className="gl-chip" />
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M8 7c2.5 3 2.5 7 0 10M12 5c4 4 4 10 0 14M16 3c5.5 5 5.5 13 0 18" /></svg>
+                </div>
+                <div className="gl-bank-num">1234 5678 9101 2134</div>
+              </div>
             </div>
-            <div className="gl-bank-num">1234 5678 9012 3456</div>
-            <div className="gl-bank-foot">
-              <span>ARIANA PAY</span>
-              <i className="gl-mc"><b /><b /></i>
-            </div>
-          </div>
           </div>
         </div>
       </section>

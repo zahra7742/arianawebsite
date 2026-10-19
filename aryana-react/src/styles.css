@@ -691,40 +691,116 @@ section {
   display: grid;
   gap: 10px;
 }
-.acc details {
+.acc-item {
   background: #fff;
-  border-radius: 8px;
-  padding: 0 16px;
   border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  /* entrance: hidden until the list scrolls into view, then each one rises in turn */
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease calc(var(--i) * 90ms),
+    transform 0.7s cubic-bezier(0.22, 0.8, 0.24, 1) calc(var(--i) * 90ms),
+    border-color 0.3s ease,
+    box-shadow 0.4s ease;
 }
-.acc summary {
-  list-style: none;
-  cursor: pointer;
-  padding: 10px 0;
-  font-size: 13px;
+.acc.in .acc-item {
+  opacity: 1;
+  transform: none;
+}
+.acc-item:hover {
+  border-color: #c4cfdd;
+}
+.acc-item.open {
+  border-color: #aebfd6;
+  box-shadow: 0 10px 26px rgba(26, 59, 102, 0.1);
+}
+.acc-item h3 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+.acc-q {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 13px 16px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
   font-weight: 500;
+  text-align: start;
+  color: inherit;
+  cursor: pointer;
 }
-.acc summary::-webkit-details-marker {
-  display: none;
+.acc-q:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: -2px;
+  border-radius: 10px;
 }
-.acc summary::before {
-  content: "+";
-  font-size: 20px;
-  line-height: 1;
-  width: 16px;
+/* the plus turns into a cross, and the circle behind it fills in */
+.acc-ic {
+  position: relative;
   flex: none;
-  color: var(--navy);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: transparent;
+  transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.24, 1), background-color 0.3s ease;
 }
-.acc details[open] summary::before {
-  content: "–";
+.acc-ic::before,
+.acc-ic::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 11px;
+  height: 2px;
+  margin: -1px 0 0 -5.5px;
+  border-radius: 2px;
+  background: var(--navy);
+  transition: background-color 0.3s ease;
 }
-.acc details p {
-  padding: 0 28px 14px;
+.acc-ic::after {
+  transform: rotate(90deg);
+}
+.acc-item.open .acc-ic {
+  transform: rotate(135deg);
+  background: var(--navy);
+}
+.acc-item.open .acc-ic::before,
+.acc-item.open .acc-ic::after {
+  background: #fff;
+}
+/* the answer: its height animates smoothly from 0 to its natural height (0fr -> 1fr), and the text fades up */
+.acc-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+.acc-item.open .acc-a {
+  grid-template-rows: 1fr;
+}
+.acc-a > div {
+  overflow: hidden;
+  min-height: 0;
+}
+.acc-a p {
+  padding: 0 50px 16px 28px;
   font-size: 12.5px;
+  line-height: 1.9;
   color: var(--muted);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+.acc-item.open .acc-a p {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
 }
 .faq-art {
   position: relative;
@@ -3828,16 +3904,15 @@ section {
   border-radius: calc(var(--cw) * 0.06);
   color: #fff;
   background:
-    radial-gradient(80% 70% at 88% 4%, rgba(125, 175, 255, 0.45), transparent 70%),
-    linear-gradient(155deg, #234f8e 0%, #12294a 58%, #0a1a31 100%);
+    radial-gradient(80% 70% at 88% 4%, rgba(130, 175, 255, 0.28), transparent 70%),
+    linear-gradient(160deg, #21497c 0%, #1a3b66 55%, #153257 100%);
   box-shadow: 0 14px 26px rgba(18, 41, 74, 0.22), 0 2px 0 rgba(255, 255, 255, 0.18) inset;
   font-family: 'Poppins', sans-serif;
-  transform: rotate(-1.5deg);
+  transform: rotate(-2deg);
   text-align: left;
-  will-change: translate, rotate;
-  /* hovers: it drifts up and a little sideways and sways, slowly (the `translate` and `rotate` properties are
-     separate from the `transform` the scroll reveal uses) */
-  animation: gl-float 7s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 @keyframes gl-float {
   0%, 100% {
@@ -3889,7 +3964,7 @@ section {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .gl-bank,
+  .gl-cards,
   .gl-shadow {
     animation: none;
   }
@@ -4035,3 +4110,61 @@ section {
   }
 }
 
+
+/* App banner: the AryanaPay phone stands at the left and breaks out of the top edge of the banner (about a third of
+   the banner's height above it), its lower end ending inside the banner; turned in 3D, top leaning to the left */
+@media (min-width: 981px) {
+  .app-banner {
+    min-height: 340px;
+    padding-block: 40px;
+    margin-top: 150px; /* room for the part of the phone above the banner */
+    margin-bottom: 50px; /* and for the part that now reaches a little below it */
+  }
+  .app-phones-3d {
+    position: absolute;
+    left: 5%;
+    top: -120px;
+    width: 390px;
+    margin: 0;
+    height: auto;
+    align-self: auto;
+  }
+  .app-phones-3d .jr-device {
+    width: 100%;
+  }
+}
+.app-phones-3d {
+  perspective: 1400px;
+  animation: floatImg 8s ease-in-out infinite;
+}
+.app-phones-3d .jr-device {
+  width: min(270px, 70%);
+  margin-inline: auto;
+  transform: rotateZ(-10deg) rotateY(18deg);
+  filter: drop-shadow(0 24px 40px rgba(8, 20, 40, 0.45));
+}
+/* the generic ".app-phones img" rule must not touch the pictures inside the phone */
+.app-phones-3d .jr-device img {
+  max-width: none;
+  margin: 0;
+  filter: none;
+  animation: none;
+}
+.app-phones-3d .jr-device .jr-device-frame {
+  width: 193.64%;
+  height: auto;
+}
+.app-phones-3d .jr-device .jr-shot {
+  width: 90.4%;
+  height: 100%;
+}
+@media (max-width: 980px) {
+  .app-phones-3d .jr-device {
+    width: min(240px, 62%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .app-phones-3d {
+    animation: none;
+  }
+}
