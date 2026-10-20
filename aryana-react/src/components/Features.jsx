@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import Icon from './Icon.jsx'
-import cardHand from '../assets/photos/card-hand.jpg'
+import cardFront from '../assets/photos/card-front.png'
 import app from '../assets/photos/app.jpg'
 
 // Four light cards in two rows (on phones the cards with a photo and without one alternate: a, b, d, c), each with an icon tile, a title and a short text; the two wide ones have a photo that fades into the card.
@@ -10,7 +10,7 @@ const CARDS = [
   { id: 'a', icon: 'bolt', title: 'انتقال سریع', text: 'پول را در چند ثانیه و به همان لحظه به کارت یا حساب دیگر بفرستید.' },
   { id: 'b', icon: 'phone', title: 'مدیریت از اپلیکیشن', text: 'موجودی، تراکنش‌ها و گزارش خرج‌هایتان را هر لحظه و هرجا از روی گوشی ببینید.', img: app },
   { id: 'd', icon: 'shield', title: 'امنیت و اطمینان', text: 'هر تراکنش با لایه‌های امنیتی بانکی محافظت می‌شود.' },
-  { id: 'c', icon: 'card', title: 'پرداخت و خرید آسان', text: 'با یک کارت بانکی ویژه شما، هم در فروشگاه و هم آنلاین پرداخت کنید.', img: cardHand },
+  { id: 'c', icon: 'card', title: 'پرداخت و خرید آسان', text: 'با یک کارت بانکی ویژه شما، هم در فروشگاه و هم آنلاین پرداخت کنید.', img: cardFront },
 ]
 
 export default function Features() {

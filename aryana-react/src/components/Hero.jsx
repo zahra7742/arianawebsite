@@ -460,7 +460,7 @@ function MiddleSlot() {
       </div>
       <div className="rv-slot-foot">
         <img src={cbiLogo} alt="" width="26" height="25" />
-        <span>مجوز بانک مرکزی</span>
+        <span>  </span>
         <i><Icon name="shield" /></i>
         <span>پرداخت امن</span>
       </div>
