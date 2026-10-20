@@ -4882,8 +4882,12 @@ img.gl-wm {
 
 /* Features before the FAQ: a tall dark card on the left, four light cards (two rows) on the right */
 .rsn { /* less white space around the section (the global section padding is 24px) */
-  margin-top: 24px;
+  margin-top: 96px; /* the phone of the banner above hangs below it, so it needs extra room */
   padding-block: 8px;
+  margin-bottom: 72px; /* room between the feature cards and the FAQ below */
+}
+@media (max-width: 720px) {
+  .rsn { margin-top: 56px; margin-bottom: 40px; }
 }
 .rsn-band {
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
