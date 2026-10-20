@@ -459,7 +459,6 @@ function MiddleSlot() {
         <BankCard />
       </div>
       <div className="rv-slot-foot">
-        <img src={cbiLogo} alt="" width="26" height="25" />
         <span>  </span>
         <i><Icon name="shield" /></i>
         <span>پرداخت امن</span>
