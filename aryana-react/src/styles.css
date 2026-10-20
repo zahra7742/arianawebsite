@@ -3685,13 +3685,13 @@ section {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 0.9s ease;
 }
 /* the line drawing lies over the photo; GSAP fades it out while the colours come in (reduced motion: hidden) */
 .gl-bg img.gl-line {
   opacity: 0;
   z-index: 1;
   pointer-events: none;
+  will-change: opacity; /* the sketch fades on its own layer, so the fade is smooth */
 }
 .gl-bg img.on {
   opacity: 1;
@@ -4487,6 +4487,33 @@ img.gl-wm {
     margin-top: clamp(124px, 22vh, 190px);
   }
 }
+/* phones: the texts sit a little higher; the card and the layout below them stay where they are (only moved, not re-flowed) */
+@media (max-width: 760px) {
+  .gl-body h2,
+  .gl-lead,
+  .gl-note,
+  .gl-cta {
+    position: relative;
+    top: -50px;
+  }
+}
+/* phones: a softer headline colour, and the card a little lower (a visual offset: nothing else moves) */
+@media (max-width: 760px) {
+  .gl-body h2 {
+    color: color-mix(in srgb, #12294a 78%, #fff);
+  }
+  .gl-bank-wrap {
+    top: 28px;
+  }
+}
+@media (max-width: 760px) and (max-height: 640px) { /* small phones: less room above the headline */
+  .gl-body h2,
+  .gl-lead,
+  .gl-note,
+  .gl-cta {
+    top: -30px;
+  }
+}
 
 /* desktop: the card pair sits a little to the right, under the middle of the headline and button */
 @media (min-width: 981px) {
@@ -4851,4 +4878,182 @@ img.gl-wm {
 /* the trust box now sits between the phone section and the app banner: more room around it */
 .trust {
   margin-top: 70px;
+}
+
+/* Features before the FAQ: a tall dark card on the left, four light cards (two rows) on the right */
+.rsn { /* less white space around the section (the global section padding is 24px) */
+  margin-top: 24px;
+  padding-block: 8px;
+}
+.rsn-band {
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  direction: ltr; /* fixed: the tall card on the left, the four cards on the right */
+  display: grid;
+  max-width: 1160px;
+  margin-inline: auto;
+}
+.rsn-card {
+  direction: rtl;
+}
+
+/* the four light cards: wide + narrow on the first row, narrow + wide on the second */
+.rsn-grid {
+  direction: ltr;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 14px;
+  margin-top: -14px; /* each open card brings its own 14px of space above it */
+}
+.rsn-card {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: 0 26px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fff 0%, var(--bg) 100%);
+  box-shadow: 0 1px 0 #fff inset, 0 0 22px rgba(26, 59, 102, 0.06);
+}
+.rsn-slot.b { grid-column: 1 / span 7; grid-row: 1; }
+.rsn-slot.a { grid-column: 8 / span 5; grid-row: 1; }
+.rsn-slot.d { grid-column: 1 / span 5; grid-row: 2; }
+.rsn-slot.c { grid-column: 6 / span 7; grid-row: 2; }
+.rsn-slot { /* takes no room until it opens, then grows to the card height like a blind coming down */
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  transition: grid-template-rows 0.55s cubic-bezier(0.22, 0.8, 0.3, 1), margin-top 0.55s cubic-bezier(0.22, 0.8, 0.3, 1); /* quick start, gentle landing */
+}
+.rsn-slot.open {
+  grid-template-rows: 1fr;
+  margin-top: 14px;
+}
+@media (min-width: 641px) { /* desktop: no opening animation, the four cards are simply there */
+  .rsn-slot {
+    grid-template-rows: 1fr;
+    margin-top: 14px;
+    transition: none;
+  }
+}
+.rsn-wrap {
+  contain: paint; /* the opening animation only has to repaint inside the card */
+  min-height: 0;
+  overflow: hidden;
+  padding-inline: 12px; /* a little room at the sides, so nothing is cut */
+  margin-inline: -12px;
+}
+.rsn-slot.rise .rsn-wrap { /* a card that comes from below is pulled up from its bottom edge */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.rsn-card {
+  height: 128px;
+}
+.rsn-photo { /* the photo sits on the far side and fades into the card */
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 46%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-mask-image: linear-gradient(to right, #000 40%, transparent);
+  mask-image: linear-gradient(to right, #000 40%, transparent);
+  filter: saturate(0.9) contrast(1.03);
+  transition: scale 0.6s var(--ease);
+}
+.rsn-card:hover .rsn-photo {
+  scale: 1.04;
+}
+.rsn-ic {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #24508a, var(--navy));
+  color: #f3c565;
+  box-shadow: 0 6px 16px rgba(26, 59, 102, 0.28), 0 0 0 4px rgba(26, 59, 102, 0.06);
+  transition: transform 0.4s var(--ease);
+}
+.rsn-card:hover .rsn-ic {
+  transform: rotate(-6deg) scale(1.06);
+}
+.rsn-ic svg {
+  width: 22px;
+  height: 22px;
+}
+.rsn-info {
+  position: relative;
+}
+.rsn-info h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--navy);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.6;
+}
+.rsn-info h3::after { /* thin gold line that grows on hover */
+  content: '';
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--yellow);
+  transition: width 0.5s var(--ease);
+}
+.rsn-card:hover .rsn-info h3::after {
+  width: 46px;
+}
+.rsn-info p {
+  max-width: 340px;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+@media (max-width: 640px) {
+  .rsn {
+    margin-top: 8px;
+    padding-block: 4px;
+  }
+  .rsn-grid { /* phones: one under the other; each card opens as you scroll down to it */
+    grid-template-columns: 1fr;
+  }
+  .rsn-slot.a,
+  .rsn-slot.b,
+  .rsn-slot.c,
+  .rsn-slot.d {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .rsn-slot { /* phones: a quicker opening */
+    transition-duration: 0.4s;
+  }
+  .rsn-photo { /* wider, with a longer fade into the card */
+    width: 38%;
+    -webkit-mask-image: linear-gradient(to right, #000 34%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 34%, transparent 100%);
+  }
+  .rsn-card.b .rsn-info p,
+  .rsn-card.c .rsn-info p { /* the text stays clear of the photo */
+    max-width: 160px;
+  }
+  .rsn-card {
+    height: 116px;
+    padding: 0 18px;
+    gap: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rsn-slot {
+    transition: none;
+  }
 }

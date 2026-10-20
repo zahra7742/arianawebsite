@@ -137,6 +137,7 @@ export default function Hero() {
       let cards = []
       let rest = []
       let pos = [0, 1, 2] // current place of each card (0 left, 1 centre, 2 right)
+      let copies = [] // the copies that stand in for a card while it wraps round
       let busy = false
       let timer = 0
       const place = (i, p) => {
@@ -150,11 +151,38 @@ export default function Hero() {
       const step = dir => {
         if (!liveOn || busy) return
         busy = true
+        const before = pos
         pos = pos.map(p => (p + dir + 3) % 3)
-        cards.forEach((el, i) => gsap.to(el, {
-          ...place(i, pos[i]), duration: 0.8, ease: 'power3.inOut', overwrite: 'auto',
-          onComplete: i === 0 ? () => { busy = false } : undefined,
-        }))
+        cards.forEach((el, i) => {
+          const to = place(i, pos[i])
+          if (Math.abs(pos[i] - before[i]) < 2) {
+            gsap.to(el, { ...to, duration: 0.8, ease: 'power3.inOut', overwrite: 'auto' })
+            return
+          }
+          // The card that wraps round must not cross behind the others (the three-card look would break): it keeps
+          // going out past its own screen edge, and a copy of it comes in from the opposite edge to take its new
+          // place. So there is a card at each edge, and one in the middle, at every moment of the turn.
+          const exit = place(i, before[i] + dir)
+          const enterFrom = place(i, pos[i] - dir)
+          const copy = el.cloneNode(true)
+          copy.setAttribute('aria-hidden', 'true')
+          Object.assign(copy.style, { position: 'absolute', margin: '0', left: el.offsetLeft + 'px', top: el.offsetTop + 'px', width: el.offsetWidth + 'px', height: el.offsetHeight + 'px', pointerEvents: 'none' })
+          cardsEl.appendChild(copy)
+          copies.push(copy)
+          gsap.set(copy, { x: enterFrom.x, scale: enterFrom.scale, zIndex: to.zIndex, '--wash': to['--wash'] })
+          gsap.to(copy, { x: to.x, duration: 0.8, ease: 'power2.out' }) // arrives early, so the edge is never bare
+          gsap.to(el, {
+            x: exit.x, scale: exit.scale, duration: 0.8, ease: 'power2.in', overwrite: 'auto', // leaves late, for the same reason
+            onComplete: () => {
+              // the real card takes the place of its copy, unnoticed
+              gsap.set(el, { ...to })
+              gsap.killTweensOf(copy)
+              copy.remove()
+              copies = copies.filter(c => c !== copy)
+            },
+          })
+        })
+        gsap.delayedCall(0.82, () => { busy = false })
       }
       const restart = () => { clearInterval(timer); timer = setInterval(() => step(1), 3200) }
       stopLive = () => {
@@ -162,6 +190,8 @@ export default function Hero() {
         liveOn = false
         clearInterval(timer)
         gsap.killTweensOf(cards)
+        copies.forEach(c => { gsap.killTweensOf(c); c.remove() })
+        copies = []
         gsap.set(cards, { x: 0, scale: 1 })
         cards.forEach(el => { el.style.removeProperty('--wash'); el.style.zIndex = '' })
         pos = [0, 1, 2]
