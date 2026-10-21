@@ -52,9 +52,6 @@ export default function Footer() {
             {legalLinks.map(label => <a key={label} href="#">{label}</a>)}
           </nav>
           <span className="ft-copy">تمامی حقوق این وب‌سایت متعلق به آریانا است. © ۱۴۰۳</span>
-          <label className="ft-lang"><Icon name="globe" className="globe" />
-            <span className="sel"><select aria-label="زبان"><option>فارسی</option><option>English</option></select><Icon name="chev-d" className="chev" /></span>
-          </label>
         </div>
       </div>
     </footer>

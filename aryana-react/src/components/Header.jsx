@@ -27,7 +27,6 @@ export default function Header() {
       <div className="container header-inner">
         <div className="brand-wrap">
           <a href="#top" className="brand" aria-label="Aryana"><img src={logo} alt="Aryana" width="120" height="34" /></a>
-          <a href="#" className="lang-btn" aria-label="English">EN</a>
         </div>
 
         <button className="nav-toggle" aria-label="منو" aria-expanded={open} onClick={() => setOpen(o => !o)}>

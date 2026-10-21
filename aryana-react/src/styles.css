@@ -167,6 +167,11 @@ html[data-hero-pinned] .site-header {
   color: var(--navy);
   direction: ltr;
 }
+/* no focus frame around the logo (the browser draws one after a click or a Tab) */
+.brand:focus,
+.brand:focus-visible {
+  outline: none;
+}
 .brand.light {
   color: #fff;
 }
@@ -177,14 +182,6 @@ html[data-hero-pinned] .site-header {
 }
 .brand.light .logo {
   color: #fff;
-}
-.lang-btn {
-  font-size: 13px;
-  font-weight: 700;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 6px 14px;
-  background: #fff;
 }
 .main-nav {
   display: flex;
@@ -1043,49 +1040,6 @@ section {
   margin-inline-start: auto;
   color: #c4d0e4;
 }
-.ft-lang {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding-inline-start: 22px;
-  border-inline-start: 1px solid rgba(255, 255, 255, 0.25);
-  margin: 0;
-}
-.ft-lang .globe {
-  width: 34px;
-  height: 34px;
-  color: #fff;
-  flex: none;
-}
-.ft-lang .sel {
-  position: relative;
-  display: block;
-}
-.ft-lang select {
-  appearance: none;
-  -webkit-appearance: none;
-  background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 10px;
-  padding: 10px 16px 10px 40px;
-  font: inherit;
-  cursor: pointer;
-  min-width: 140px;
-}
-.ft-lang select option {
-  color: #12294a;
-}
-.ft-lang .chev {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  width: 18px;
-  height: 18px;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: #fff;
-}
 
 @media (max-width: 1280px) {
   .ft-grid {
@@ -1141,10 +1095,6 @@ section {
   }
   .ft-copy {
     margin: 0;
-  }
-  .ft-lang {
-    border: 0;
-    padding: 0;
   }
 }
 /* compact two-column footer on phones */
@@ -1260,15 +1210,6 @@ section {
   }
   .ft-copy {
     font-size: 11.5px;
-  }
-  .ft-lang .globe {
-    width: 28px;
-    height: 28px;
-  }
-  .ft-lang select {
-    padding: 8px 14px 8px 36px;
-    min-width: 120px;
-    font-size: 13px;
   }
 }
 /* ===== Animations ===== */
@@ -4098,19 +4039,6 @@ img.gl-wm {
 }
 .ft-copy {
   color: var(--muted);
-}
-.ft-lang {
-  border-inline-start-color: #d9e1ee;
-}
-.ft-lang .globe,
-.ft-lang select {
-  color: var(--navy-2);
-}
-.ft-lang select {
-  border-color: #c9d3e3;
-}
-.ft-lang .chev {
-  color: var(--navy-2);
 }
 
 /* phones: the download button sits on the right (the start side), and the cards a little lower */
