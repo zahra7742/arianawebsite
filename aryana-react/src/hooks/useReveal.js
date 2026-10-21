@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const revealSel = '.about-card > *, .app-banner, .aud-card, .trust-item, .faq-card, .contact-card, .art, .acc details, .photo'
+const revealSel = '.about-card > *, .app-banner, .aud-card, .trust-item, .faq-card, .art, .acc details, .photo'
 
 // Scroll-reveal animations
 export default function useReveal() {
