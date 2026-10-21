@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Icon from './Icon.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import logoLight from '../assets/logo/aryana-logo-light.png'
 import markLight from '../assets/logo/aryana-mark-light.png'

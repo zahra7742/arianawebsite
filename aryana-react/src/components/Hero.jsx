@@ -382,7 +382,7 @@ export default function Hero() {
       ctx.revert()
       stage.querySelector('.rv-clip').style.clipPath = ''
     }
-  }, [reduce, isPhone])
+  }, [reduce, isPhone, simple])
 
   return (
     // React-owned wrapper: GSAP inserts its pin-spacer inside it, never in React's parent
