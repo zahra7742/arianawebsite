@@ -3,7 +3,6 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Icon from './Icon.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
-import cbiLogo from '../assets/photos/ft-cbi.png'
 import logoLight from '../assets/logo/aryana-logo-light.png'
 import heroPhoto from '../assets/photos/hero/tehran-hero.webp'
 
@@ -399,8 +398,6 @@ export default function Hero() {
           <div className="rv-hero-card-in">
             <BankCard />
             <div className="rv-hero-foot">
-              <img src={cbiLogo} alt="" width="26" height="25" />
-              <span>مجوز بانک مرکزی</span>
               <i><Icon name="shield" /></i>
               <span>پرداخت امن</span>
             </div>
@@ -459,7 +456,6 @@ function MiddleSlot() {
         <BankCard />
       </div>
       <div className="rv-slot-foot">
-        <span>  </span>
         <i><Icon name="shield" /></i>
         <span>پرداخت امن</span>
       </div>
