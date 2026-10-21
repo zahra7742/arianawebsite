@@ -55,16 +55,16 @@ export default function Goals() {
       // and the colours finish with the card. Phones (plays by itself): no waiting, the first text is there almost at
       // once and the rest follows quickly.
       const t = isPhone
-        ? { img: 0.1, imgDur: 3.2, h2: 0, lead: 0.12, note: 0.6, cta: 0.85, bank: 1.3, bankDur: 0.9, rest: 2.0 }
+        ? { img: 0.1, imgDur: 3.4, h2: 0, lead: 0.22, note: 0.85, cta: 1.15, bank: 1.7, bankDur: 1.1, rest: 2.6 }
         : { img: 0.5, imgDur: 3.7, h2: 0.8, lead: 1.4, note: 1.95, cta: 2.5, bank: 3.1, bankDur: 1.1, rest: 4.2 }
       // Both pictures are opaque (white background). The colour photo lies underneath at full strength and only the
       // sketch on top fades out, so the picture is a straight blend from sketch to colour: fading both would let the
       // white page show through in the middle and the picture would dip towards pale.
       tl.fromTo(q('.gl-line'), { opacity: 1 }, { opacity: 0, ease: 'sine.inOut', duration: t.imgDur }, t.img)
         .from(q('h2'), { autoAlpha: 0, y: 40, duration: isPhone ? 0.42 : 1 }, t.h2)
-        .from(q('.gl-lead'), { autoAlpha: 0, y: 30, duration: isPhone ? 0.45 : 0.9 }, t.lead)
-        .from(q('.gl-note'), { autoAlpha: 0, y: 24, duration: isPhone ? 0.6 : 0.8 }, t.note)
-        .from(q('.gl-cta'), { autoAlpha: 0, y: 16, scale: 0.92, duration: isPhone ? 0.6 : 0.8 }, t.cta)
+        .from(q('.gl-lead'), { autoAlpha: 0, y: 30, duration: isPhone ? 0.55 : 0.9 }, t.lead)
+        .from(q('.gl-note'), { autoAlpha: 0, y: 24, duration: isPhone ? 0.7 : 0.8 }, t.note)
+        .from(q('.gl-cta'), { autoAlpha: 0, y: 16, scale: 0.92, duration: isPhone ? 0.7 : 0.8 }, t.cta)
         .from(q('.gl-bank-wrap'), { autoAlpha: 0, y: 40, duration: t.bankDur }, t.bank) // only once the button has settled, so the two never overlap
         .to({}, { duration: 2 }, t.rest) // everything is in place by then: the finished screen rests for a moment before the page scrolls on
       if (isPhone) {

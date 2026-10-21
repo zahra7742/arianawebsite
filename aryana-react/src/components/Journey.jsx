@@ -32,8 +32,7 @@ function Device({ stage }) {
 function StageText({ item, className = '', hidden }) {
   return (
     <div className={`jr-text ${className}`} aria-hidden={hidden || undefined}>
-      <span className="jr-num">{item.num}</span>
-      <h2>{item.title}<br /><span>{item.accent}</span></h2>
+      <h2>{item.title}{' '}<br /><span>{item.accent}</span></h2>
       <p>{item.text}</p>
     </div>
   )
@@ -238,7 +237,7 @@ function MobileJourney() {
       <div className="jr-msteps" aria-hidden="true">
         {journey.map((item, i) => (
           <span key={item.num} className={i === active ? 'on' : i < active ? 'done' : undefined}>
-            <b>{item.num}</b>{item.title}
+            {item.title}
           </span>
         ))}
       </div>

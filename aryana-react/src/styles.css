@@ -50,7 +50,7 @@ svg {
 }
 @media (max-width: 760px) {
   .container {
-    width: calc(100% - 32px);
+    width: calc(100% - 48px); /* 24px of white space on each side */
   }
 }
 .ic {
@@ -393,6 +393,30 @@ section {
   direction: ltr;
   color: #fff;
   transition: 0.2s;
+}
+.store-btn {
+  width: 176px; /* the three buttons are the same size */
+  justify-content: center;
+}
+@media (max-width: 560px) {
+  .app-banner .store-row {
+    flex-wrap: nowrap; /* phones: the three stay in one row, equal, the icon above the text */
+    gap: 8px;
+    width: 100%;
+  }
+  .app-banner .store-btn {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 4px;
+    font-size: 12.5px;
+    text-align: center;
+  }
+  .app-banner .store-btn small {
+    font-size: 8.5px;
+  }
 }
 .store-btn:hover {
   background: rgba(255, 255, 255, 0.12);
@@ -1631,7 +1655,7 @@ section {
 }
 @media (max-width: 380px) {
   .container {
-    width: calc(100% - 24px);
+    width: calc(100% - 40px);
   }
   .brand {
     font-size: 16px;
@@ -2053,14 +2077,6 @@ section {
 .jr-text {
   direction: rtl;
 }
-.jr-num {
-  display: block;
-  font-family: "Poppins", sans-serif;
-  font-size: 26px;
-  font-weight: 500;
-  color: #9aa6b6;
-  margin-bottom: 10px;
-}
 .jr-text h2 {
   font-size: clamp(30px, 3.4vw, 46px);
   font-weight: 800;
@@ -2314,12 +2330,6 @@ section {
   color: var(--muted);
   transition: color 0.3s;
 }
-.jr-msteps b {
-  font-family: "Poppins", sans-serif;
-  font-size: 12px;
-  color: #9aa6b6;
-  transition: color 0.3s;
-}
 .jr-msteps span::after {
   content: "";
   position: absolute;
@@ -2337,9 +2347,6 @@ section {
   color: var(--navy-2);
   font-weight: 700;
 }
-.jr-msteps .on b {
-  color: var(--yellow);
-}
 .jr-msteps .on::after {
   background: var(--yellow);
 }
@@ -2348,10 +2355,6 @@ section {
   gap: 22px;
   padding-block: 40px;
   text-align: center;
-}
-.jr-mrow .jr-num {
-  font-size: 18px;
-  margin-bottom: 4px;
 }
 .jr-mrow .jr-text h2 {
   font-size: 26px;
@@ -2408,20 +2411,18 @@ section {
   width: 100%;
   max-width: 420px;
   height: var(--text-h);
+  translate: 0 -24px; /* the text sits higher */
   overflow: hidden;
   /* soft edges so the sliding text fades in and out */
-  -webkit-mask-image: linear-gradient(transparent, #000 10%, #000 90%, transparent);
-  mask-image: linear-gradient(transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(transparent, #000 2%, #000 98%, transparent);
+  mask-image: linear-gradient(transparent, #000 2%, #000 98%, transparent);
 }
 .jr-mtexts .jr-text {
   height: var(--text-h);
   display: grid;
-  align-content: center;
+  align-content: end; /* the text rests on the bottom of its box, so the gap to the phone is the same whatever the number of lines */
+  padding-bottom: 8px; /* the last line's descenders must not touch the clipped edge */
   text-align: center;
-}
-.jr-mtexts .jr-num {
-  font-size: 18px;
-  margin-bottom: 2px;
 }
 .jr-mtexts .jr-text h2 {
   font-size: 25px;
@@ -2902,7 +2903,7 @@ section {
     aspect-ratio: 0.62;
     translate: calc(var(--ch) * -0.5 + 7px) 0;
     border: 1.5px solid rgb(255 255 255 / 0.75);
-    border-radius: 22px;
+    border-radius: 14px;
     container-type: inline-size; /* the text inside scales with the card */
   }
   .rv-hero-card {
@@ -2922,7 +2923,7 @@ section {
     transform: translate(-14px, 0) rotate(90deg);
     animation: rv-card-in 1.3s cubic-bezier(0.22, 0.7, 0.25, 1) both, rv-card-fall 3.4s 1.1s both, rv-card-shake 1.4s 3.45s;
     border: 1.5px solid rgb(255 255 255 / 0.75);
-    border-radius: 22px;
+    border-radius: 14px;
     overflow: hidden;
     container-type: inline-size;
   }
@@ -3719,7 +3720,7 @@ section {
   width: min(270px, 70%);
   margin-inline: auto;
   transform: rotateZ(-10deg) rotateY(18deg);
-  filter: drop-shadow(0 24px 40px rgba(8, 20, 40, 0.45));
+  filter: none; /* no shadow under the phone */
 }
 /* the generic ".app-phones img" rule must not touch the pictures inside the phone */
 .app-phones-3d .jr-device img {
@@ -3739,6 +3740,7 @@ section {
 @media (max-width: 980px) {
   .app-phones-3d .jr-device {
     width: min(240px, 62%);
+    translate: -14px 14px; /* a little to the left and lower */
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -4242,17 +4244,6 @@ img.gl-wm {
   font-weight: 800;
   line-height: 1.6;
 }
-.rsn-info h3::after { /* thin gold line that grows on hover */
-  content: '';
-  width: 22px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--yellow);
-  transition: width 0.5s var(--ease);
-}
-.rsn-card:hover .rsn-info h3::after {
-  width: 46px;
-}
 .rsn-info p {
   max-width: 340px;
   margin-top: 2px;
@@ -4276,17 +4267,26 @@ img.gl-wm {
     grid-column: 1;
     grid-row: auto;
   }
-  .rsn-slot { /* phones: a quicker opening */
-    transition-duration: 0.4s;
+  .rsn-slot { /* phones: a little quicker than desktop, but calm */
+    transition-duration: 0.5s;
   }
   .rsn-photo { /* wider, with a longer fade into the card */
     width: 38%;
     -webkit-mask-image: linear-gradient(to right, #000 34%, transparent 100%);
     mask-image: linear-gradient(to right, #000 34%, transparent 100%);
   }
+  .rsn-info p { /* the photo cards keep their text clear of the photo; the plain cards use a little more width */
+    max-width: 232px;
+  }
   .rsn-card.b .rsn-info p,
-  .rsn-card.c .rsn-info p { /* the text stays clear of the photo */
-    max-width: 160px;
+  .rsn-card.c .rsn-info p {
+    max-width: 168px;
+  }
+  .rsn-card.a,
+  .rsn-card.d { /* the plain cards: a very faint blue wash on the far side, where the photo cards have their picture */
+    background:
+      linear-gradient(to right, rgba(36, 80, 138, 0.1) 0%, rgba(36, 80, 138, 0) 55%),
+      linear-gradient(135deg, #fff 0%, var(--bg) 100%);
   }
   .rsn-card {
     height: 116px;
@@ -4297,5 +4297,114 @@ img.gl-wm {
 @media (prefers-reduced-motion: reduce) {
   .rsn-slot {
     transition: none;
+  }
+}
+
+/* Phones: every paragraph is justified the same way (both edges even, the last line starts at the right edge). */
+@media (max-width: 760px) {
+  .rv-copy p,
+  .app-banner p,
+  .ar-head p,
+  .ar-card p,
+  .acc details p,
+  .rv-next-head p,
+  .gl-lead,
+  .gl-note,
+  .jr-text p,
+  .trust .section-sub,
+  .ft-brand p {
+    text-align: justify;
+    text-align-last: start;
+    text-justify: inter-word;
+    text-wrap: pretty; /* avoids a lone word on the last line */
+    hyphens: none;
+  }
+}
+
+/* Phones: headings and the text under them share one alignment and one pair of side margins (right edge to left edge
+   of the same column), instead of a centred heading over a justified paragraph. */
+@media (max-width: 760px) {
+  .rv-next-head,
+  .rv-next-head h2,
+  .section-title,
+  .faq-card .section-title,
+  .jr-mrow,
+  .jr-mtexts .jr-text {
+    text-align: start;
+  }
+  .gl-body {
+    align-items: stretch; /* the heading takes the whole column, like the paragraphs */
+    text-align: start;
+  }
+  .gl-cta {
+    align-self: flex-start; /* the button sits on the same right edge */
+  }
+  .gl-bank-wrap {
+    align-self: center; /* the card stays in the middle */
+  }
+  .jr-mpin {
+    padding-inline: 24px; /* the same side margin as the headings of the other sections */
+  }
+  .jr-mtexts {
+    max-width: none;
+  }
+  .jr-mtexts .jr-text p,
+  .jr-mrow .jr-text p,
+  .rv-next-head p {
+    max-width: none;
+    margin-inline: 0;
+  }
+}
+
+/* Phones: the Journey title is one line ("title accent"), the line break is only for desktop */
+@media (max-width: 760px) {
+  .jr-text h2 br {
+    display: none;
+  }
+  .jr-mtexts .jr-text h2,
+  .jr-mrow .jr-text h2 {
+    font-size: 24px;
+    line-height: 1.7; /* the same breathing room between title and text as the "اعتماد بیشتر" header */
+    margin-bottom: 0;
+  }
+  .jr-mtexts .jr-text p,
+  .jr-mrow .jr-text p {
+    font-size: 15px;
+    margin-top: 4px;
+  }
+}
+@media (max-width: 430px) { /* normal phones: the longest title still fits one line */
+  .jr-mtexts .jr-text h2,
+  .jr-mrow .jr-text h2 {
+    font-size: 22px;
+  }
+}
+@media (max-width: 380px) { /* small phones: the longest title must still fit one line */
+  .jr-mpin {
+    padding-inline: 20px; /* as .container on small phones */
+  }
+  .jr-mtexts .jr-text h2,
+  .jr-mrow .jr-text h2 {
+    font-size: 20px;
+  }
+  .jr-mtexts .jr-text p,
+  .jr-mrow .jr-text p {
+    font-size: 14px;
+  }
+}
+
+/* Phones: in the app banner the title is stretched (bigger) to be exactly as wide as the text under it, so both have the
+   same distance from the sides. --t is the width of the text column (the text keeps its normal width, 440px at most);
+   9.93 is the width of the title line in units of its font size. */
+@media (max-width: 760px) {
+  .app-banner {
+    container-type: inline-size;
+  }
+  .app-banner .app-text {
+    --t: min(440px, 100cqw);
+  }
+  .app-banner h2 {
+    font-size: calc(var(--t) / 9.93);
+    white-space: nowrap;
   }
 }

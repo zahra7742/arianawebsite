@@ -56,7 +56,7 @@ export default function Features() {
       el.classList.add('open')
       // the next card starts while this one is still settling, so the cards flow into each other; quicker on phones,
       // where people scroll fast
-      timer = setTimeout(step, window.innerWidth <= 640 ? 260 : 380)
+      timer = setTimeout(step, window.innerWidth <= 640 ? 320 : 380)
     }
 
     // while cards rise, whatever grows in the section must not push what is below it down the screen:
