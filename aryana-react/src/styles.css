@@ -322,58 +322,6 @@ section {
 
 /* Photo placeholders (replace with real <img> / background images) */
 /* Real photos live in assets/photos/. The gradient shows only if a file is missing. */
-.photo {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #9db8e4, #4c6fa8 60%, #2a4474)
-    center/cover no-repeat;
-}
-.photo::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(18, 41, 74, 0.35), transparent 50%);
-}
-.photo-man {
-  min-height: 200px;
-  border-radius: 14px;
-  background-image: linear-gradient(135deg, #9db8e4, #2a4474);
-  background-position: center 25%;
-}
-.photo-man2 {
-  background-image: linear-gradient(135deg, #c9d6ea, #6f8bb8);
-  background-position: center 20%;
-}
-.photo-city {
-  background-image: linear-gradient(135deg, #7fb0e6, #2f5f9c);
-}
-.photo-edu {
-  background-image: linear-gradient(135deg, #b6c8e6, #5a7bb0);
-  background-position: center 25%;
-}
-.photo-city2 {
-  background-image: linear-gradient(135deg, #8ec0ec, #3b6ba6);
-}
-.photo-tag {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(6px);
-  border-radius: 10px;
-  padding: 8px 22px;
-  text-align: right;
-  font-size: 12px;
-}
-.photo-tag strong {
-  display: block;
-  font-size: 13px;
-  color: var(--navy-2);
-}
-.photo-tag span {
-  color: var(--muted);
-}
 
 /* App banner */
 .app-banner {
@@ -485,93 +433,7 @@ section {
   transform: rotate(4deg);
 }
 
-/* Audience */
-.aud-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-/* as in the design: wide photo strip on top, icon overlapping its bottom-left, text on the right */
-.aud-card {
-  position: relative;
-  display: block;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  min-height: 210px;
-}
 /* photo spans the full top; white panel with a curved corner overlaps its bottom-right (as in the design) */
-.aud-img {
-  height: 116px;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-.aud-img::before {
-  background: none;
-}
-.aud-ic {
-  position: absolute;
-  left: 18px;
-  top: 72px;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fff3cf, #f6c453);
-  display: grid;
-  place-items: center;
-  border: 5px solid #fff;
-  box-shadow: 0 6px 18px rgba(26, 59, 102, 0.15);
-  color: var(--navy);
-  z-index: 3;
-}
-.aud-ic svg {
-  width: 34px;
-  height: 34px;
-}
-.aud-body {
-  position: relative;
-  z-index: 2;
-  display: block;
-  width: 62%;
-  margin: -46px 0 0 auto;
-  padding: 18px 24px 18px 8px;
-  background: #fff;
-  border-top-left-radius: 48px;
-}
-.aud-body h3 {
-  font-size: 16px;
-  color: var(--navy-2);
-  text-align: right;
-  line-height: 1.5;
-}
-.aud-body p {
-  font-size: 12.5px;
-  line-height: 1.9;
-  color: var(--muted);
-  margin: 4px 0 0;
-  padding: 0;
-}
-.aud-card > .btn {
-  position: absolute;
-  left: 16px;
-  bottom: 14px;
-  z-index: 3;
-}
-.photo-man2,
-.photo-edu {
-  background-image:
-    url(./assets/photos/individual.jpg),
-    linear-gradient(135deg, #c9d6ea, #6f8bb8);
-  background-position: center top;
-}
-.photo-city,
-.photo-city2 {
-  background-image:
-    url(./assets/photos/business.jpg), linear-gradient(135deg, #7fb0e6, #2f5f9c);
-  background-position: center;
-}
 
 /* ===== real images ===== */
 .about-photo img {
@@ -1410,35 +1272,17 @@ section {
   }
 }
 /* ===== Animations ===== */
-.photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    110deg,
-    transparent 35%,
-    rgba(255, 255, 255, 0.28) 50%,
-    transparent 65%
-  );
-  transform: translateX(-120%);
-  animation: shine 6s ease-in-out infinite 1.5s;
-}
-.photo-tag,
-.tag {
+
+.tag{
   z-index: 2;
 }
-.art,
-.aud-card {
+.art{
   transition:
     transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
     box-shadow 0.35s,
     border-color 0.35s;
 }
-.aud-card:hover {
-  transform: translateY(-4px);
-}
+
 /* articles: the track clips overflow, so give the cards room for lift + shadow */
 .art-track {
   padding: 12px 6px 22px;
@@ -1556,17 +1400,8 @@ section {
   opacity: 1;
   transform: none;
 }
-.photo.reveal {
-  opacity: 1;
-  transform: none;
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 1s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms);
-}
-.photo.reveal.in {
-  clip-path: inset(0);
-}
-.aud-card.reveal,
-.art.reveal {
+
+.art.reveal{
   transform: translateY(32px) scale(0.97);
 }
 
@@ -1637,9 +1472,8 @@ section {
     justify-content: space-between;
   }
   .about-card,
-  .aud-grid,
-  .faq-card,
-  .foot-grid {
+.faq-card,
+.foot-grid{
     grid-template-columns: 1fr;
   }
   .app-banner {
@@ -1648,20 +1482,9 @@ section {
   .app-phones {
     margin-bottom: -26px;
   }
-  .aud-body {
-    width: 70%;
-  }
-  .aud-ic {
-    width: 64px;
-    height: 64px;
-    left: 14px;
-    top: 78px;
-  }
-  .aud-card > .btn {
-    left: 10px;
-    padding: 8px 12px;
-    font-size: 12px;
-  }
+  
+  
+  
   .faq-art {
     display: none;
   }
@@ -1982,64 +1805,6 @@ section {
   }
 }
 
-/* audience cards on phones: two columns, one row */
-@media (max-width: 760px) {
-  .aud-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-  .aud-card {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    text-align: center;
-  }
-  .aud-img {
-    height: 84px;
-  }
-  .aud-ic {
-    left: 50%;
-    right: auto;
-    top: 52px;
-    transform: translateX(-50%);
-    width: 58px;
-    height: 58px;
-    border-width: 4px;
-  }
-  .aud-ic svg {
-    width: 26px;
-    height: 26px;
-  }
-  .aud-body {
-    width: 100%;
-    margin: 0;
-    padding: 38px 10px 10px;
-    border-radius: 0;
-    background: transparent;
-    text-align: center;
-  }
-  .aud-body h3 {
-    font-size: 13.5px;
-    text-align: center;
-  }
-  .aud-body p {
-    font-size: 11.5px;
-    line-height: 1.8;
-  }
-  .aud-card > .btn {
-    position: static;
-    margin: auto 10px 12px;
-    padding: 8px 6px;
-    font-size: 11.5px;
-    gap: 4px;
-    width: calc(100% - 20px);
-  }
-  .aud-card > .btn .ic {
-    width: 14px;
-    height: 14px;
-  }
-}
-
 /* articles: title top-right, "view all" + arrows top-left, cards below */
 .art-head {
   display: flex;
@@ -2123,20 +1888,6 @@ section {
 }
 
 /* "برای افراد و کسب‌وکارها": orange line under the whole title */
-.audience .section-title span {
-  position: relative;
-  display: inline-block;
-  padding-bottom: 10px;
-}
-.audience .section-title span::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
-  height: 3px;
-  border-radius: 3px;
-  background: var(--yellow);
-}
 
 /* About + Articles titles: same look as the other section titles, with the orange underline */
 .about-text h2,
@@ -3997,7 +3748,6 @@ section {
   }
 }
 
-
 /* App banner: the AryanaPay phone stands at the left and breaks out of the top edge of the banner (about a third of
    the banner's height above it), its lower end ending inside the banner; turned in 3D, top leaning to the left */
 @media (min-width: 981px) {
@@ -4409,338 +4159,11 @@ img.gl-wm {
   }
 }
 
-/* ===== Showcase: a tilted stack of app screens, with the text beside it and previous / next ===== */
-.sc {
-  display: grid;
-  grid-template-columns: 1fr 1.1fr; /* RTL: the text is on the right, the stack on the left */
-  align-items: center;
-  gap: 40px;
-  margin-top: 90px;
-}
-.sc-tag {
-  display: inline-block;
-  padding: 4px 14px;
-  border: 1px solid rgba(225, 156, 38, 0.6);
-  border-radius: 8px;
-  background: rgba(225, 156, 38, 0.12);
-  color: #a96d0a;
-  font-size: 12px;
-  font-weight: 700;
-}
-.sc-text h2 {
-  margin: 14px 0 10px;
-  font-size: clamp(24px, 3vw, 34px);
-  font-weight: 800;
-  line-height: 1.5;
-  color: var(--navy-2);
-  animation: sc-in 0.6s cubic-bezier(0.22, 0.8, 0.24, 1) both;
-}
-.sc-text p {
-  max-width: 440px;
-  font-size: 14px;
-  line-height: 2;
-  color: var(--muted);
-  animation: sc-in 0.6s cubic-bezier(0.22, 0.8, 0.24, 1) 0.08s both;
-}
 @keyframes sc-in {
   from {
     opacity: 0;
     transform: translateY(10px);
   }
-}
-.sc-nav {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-top: 26px;
-}
-.sc-nav button,
-.sc-open {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #fff;
-  font: inherit;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--navy);
-  cursor: pointer;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
-}
-.sc-nav button:hover,
-.sc-open:hover {
-  background: var(--navy);
-  border-color: var(--navy);
-  color: #fff;
-  transform: translateY(-2px);
-}
-.sc-nav svg {
-  width: 14px;
-  height: 14px;
-}
-.sc-nav button:first-child svg {
-  transform: scaleX(-1);
-}
-.sc-open {
-  margin-inline-start: auto;
-  background: var(--navy);
-  border-color: var(--navy);
-  color: #fff;
-}
-.sc-open:hover {
-  background: var(--blue);
-  border-color: var(--blue);
-}
-.sc-stage {
-  position: relative;
-  height: 400px;
-  perspective: 1600px;
-  direction: ltr;
-}
-.sc-stack {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: min(380px, 86%);
-  aspect-ratio: 16 / 10;
-  transform-style: preserve-3d;
-  transform: translate(-50%, -50%) rotateX(50deg) rotateZ(-34deg);
-}
-.sc-card {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border: 1px solid rgba(18, 41, 74, 0.28);
-  border-radius: 14px;
-  background: #0f1d33;
-  box-shadow: 22px 24px 40px rgba(18, 41, 74, 0.28);
-  /* --p: 0 is the front screen; the ones behind it step back, down and aside, and fade a little */
-  transform: translate3d(calc(var(--p) * -34px), calc(var(--p) * 34px), calc(var(--p) * -46px));
-  opacity: calc(1 - var(--p) * 0.22);
-  z-index: calc(10 - var(--p));
-  transition: transform 0.8s cubic-bezier(0.22, 0.8, 0.24, 1), opacity 0.6s ease;
-}
-.sc-card img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
-@media (max-width: 860px) {
-  .sc {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    margin-top: 60px;
-  }
-  .sc-stage {
-    order: 2;
-    height: 300px;
-  }
-  .sc-open {
-    margin-inline-start: 0;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sc-text h2,
-  .sc-text p {
-    animation: none;
-  }
-  .sc-card {
-    transition: none;
-  }
-}
-
-/* the tilted stack must stay inside its own area: no sideways overflow, and room below it */
-.sc {
-  overflow-x: clip;
-  margin-bottom: 70px;
-}
-.sc-stage {
-  height: 440px;
-  perspective: none;
-}
-/* a messy pile: nearly flat, every screen thrown down at its own angle and not quite on top of the others */
-.sc-stack {
-  width: min(340px, 82%);
-  transform: translate(-50%, -50%);
-}
-.sc-card {
-  transform: translate(0, 0) rotate(-1.5deg);
-  opacity: 1;
-  box-shadow: 0 14px 30px rgba(18, 41, 74, 0.26);
-  border-radius: 12px;
-  transition: transform 0.9s cubic-bezier(0.22, 0.8, 0.24, 1), box-shadow 0.9s ease;
-}
-.sc-card.p0 { transform: translate(6px, -4px) rotate(-1.5deg); z-index: 3; }
-.sc-card.p1 { transform: translate(-48px, 22px) rotate(-12deg); z-index: 2; }
-.sc-card.p2 { transform: translate(40px, 38px) rotate(9deg); z-index: 1; }
-.sc-card:not(.p0) img {
-  filter: brightness(0.9);
-}
-@media (max-width: 860px) {
-  .sc-stage {
-    height: 360px;
-  }
-  .sc-stack {
-    width: min(270px, 74%);
-  }
-  .sc-card.p1 { transform: translate(-32px, 16px) rotate(-12deg); }
-  .sc-card.p2 { transform: translate(28px, 28px) rotate(9deg); }
-}
-
-/* the pile's cards hold content (an icon, a title and a text) instead of pictures */
-.sc-stage {
-  direction: rtl;
-}
-.sc-stack {
-  width: min(330px, 84%);
-  aspect-ratio: 1.25;
-}
-.sc-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 24px 24px 22px;
-  border: 1px solid #dfe6f1;
-  border-radius: 18px;
-  background: #fff;
-  overflow: visible;
-}
-.sc-card.p1 {
-  background: #f1f5fb;
-}
-.sc-card.p2 {
-  background: #fbf4e6;
-}
-.sc-card:not(.p0) > * {
-  opacity: 0.55;
-}
-.sc-ic {
-  width: 46px;
-  height: 46px;
-  display: grid;
-  place-items: center;
-  border-radius: 14px;
-  background: #e7efff;
-  color: var(--blue);
-}
-.sc-ic.yellow {
-  background: #fdf0d2;
-  color: #b97a0c;
-}
-.sc-ic.green {
-  background: #e1f6ea;
-  color: #1f8f55;
-}
-.sc-ic svg {
-  width: 24px;
-  height: 24px;
-}
-.sc-card h3 {
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 1.6;
-  color: var(--navy-2);
-}
-.sc-card p {
-  font-size: 13px;
-  line-height: 1.95;
-  color: var(--muted);
-}
-.sc-card.p0 > * {
-  transition: opacity 0.6s ease 0.15s;
-}
-@media (max-width: 860px) {
-  .sc-stack {
-    width: min(290px, 78%);
-    aspect-ratio: 1.15;
-  }
-  .sc-card {
-    padding: 20px;
-  }
-}
-
-/* every card has its own colour (it keeps it wherever it lies in the pile) */
-.sc-card.p1,
-.sc-card.p2 {
-  background: inherit;
-}
-.sc-card.blue {
-  background: linear-gradient(150deg, #dfeaff, #c4d8fb);
-  border-color: #b4cbf5;
-}
-.sc-card.yellow {
-  background: linear-gradient(150deg, #ffeec2, #fbd77f);
-  border-color: #f2c765;
-}
-.sc-card.green {
-  background: linear-gradient(150deg, #d9f5e5, #b3e8cb);
-  border-color: #9fdcba;
-}
-.sc-card .sc-ic {
-  background: rgba(255, 255, 255, 0.75);
-}
-.sc-card h3 {
-  color: #12294a;
-}
-.sc-card p {
-  color: #3b4b66;
-}
-/* the cards behind stay vivid, only a little softer */
-.sc-card:not(.p0) > * {
-  opacity: 0.7;
-}
-
-/* desktop: the cards on the right, the text on the left */
-@media (min-width: 861px) {
-  .sc {
-    grid-template-columns: 1.1fr 1fr;
-  }
-  .sc-stage {
-    order: -1;
-  }
-}
-
-/* the pile turns by itself: small dots show which card is in front (the previous / next buttons are gone) */
-.sc-dots {
-  display: flex;
-  gap: 8px;
-  margin-top: 24px;
-}
-.sc-dots i {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: #cfd8e6;
-  transition: width 0.4s cubic-bezier(0.22, 0.8, 0.24, 1), background-color 0.4s ease;
-}
-.sc-dots i.on {
-  width: 28px;
-  background: var(--navy);
-}
-.sc-text .sc-open {
-  margin-top: 22px;
-  margin-inline-start: 0;
-  width: fit-content;
-}
-.sc-text .sc-open {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 22px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-}
-.sc-text .sc-open svg {
-  width: 14px;
-  height: 14px;
-  flex: none;
 }
 
 /* FAQ: no box and no picture, the accordion takes the full width of the page */

@@ -7,28 +7,6 @@ export const navLinks = [
   { href: '#about', label: 'درباره ما' },
 ]
 
-export const features = [
-  { icon: 'phone', color: 'blue', title: 'مدیریت در اپلیکیشن', text: 'مشاهده موجودی، تاریخچه تراکنش‌ها و کنترل کامل کارت' },
-  { icon: 'card', color: 'yellow', title: 'کارت به کارت', text: 'انتقال وجه سریع و آسان' },
-  { icon: 'store', color: 'yellow', title: 'پرداخت در فروشگاه‌ها', text: 'از طریق کارت‌خوان (POS) در تمام پذیرندگان' },
-  { icon: 'cart', color: 'blue', title: 'خرید آنلاین', text: 'از فروشگاه‌های داخلی و بین‌المللی' },
-  { icon: 'shield', color: 'blue', title: 'امنیت و اطمینان', text: 'با استانداردهای بانکی و فناوری‌های امنیتی پیشرفته', wide: true },
-]
-
-// Highlights: three glass pills on each side of the card + phone
-export const highlights = {
-  left: [
-    { icon: 'globe', tone: 'yellow', title: 'کارت بین‌المللی', text: 'خرید از میلیون‌ها فروشگاه در سراسر جهان' },
-    { icon: 'phone', tone: 'blue', title: 'مدیریت در اپلیکیشن', text: 'مشاهده موجودی، تاریخچه و کنترل کامل کارت' },
-    { icon: 'shield', tone: 'green', title: 'امنیت و اطمینان', text: 'با استانداردهای بین‌المللی و فناوری‌های امنیتی پیشرفته' },
-  ],
-  right: [
-    { icon: 'bolt', tone: 'purple', title: 'انتقال سریع وجه', text: 'در هر زمان و مکان' },
-    { icon: 'cart', tone: 'blue', title: 'خرید آنلاین', text: 'از فروشگاه‌های داخلی و بین‌المللی' },
-    { icon: 'chart', tone: 'pink', title: 'کنترل هزینه‌ها', text: 'گزارش‌های دقیق و دسته‌بندی هوشمند' },
-  ],
-}
-
 // Journey: the three scroll-driven stages (text + phone screen)
 export const journey = [
   {
