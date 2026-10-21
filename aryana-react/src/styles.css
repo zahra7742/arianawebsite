@@ -4408,3 +4408,27 @@ img.gl-wm {
     white-space: nowrap;
   }
 }
+
+/* Phones, Goals: one clear order of text: a dark headline, a medium lead, a small muted note (the same spacing between
+   headline and text as in the other sections) */
+@media (max-width: 760px) {
+  .gl-body h2 {
+    font-size: 26px;
+    line-height: 1.7;
+    color: #12294a;
+  }
+  .gl-lead {
+    margin-top: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.9;
+    color: #25395a;
+  }
+  .gl-note {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #66768e;
+    opacity: 1;
+  }
+}
