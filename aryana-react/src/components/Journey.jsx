@@ -4,10 +4,10 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import { journey } from '../data/content.js'
-import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.png'
-import dashboardImg from '../assets/photos/journey/aryanapay-dashboard.png'
-import transferImg from '../assets/photos/journey/aryanapay-transfer.png'
-import paymentsImg from '../assets/photos/journey/aryanapay-payments.png'
+import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.webp'
+import dashboardImg from '../assets/photos/journey/aryanapay-dashboard.webp'
+import transferImg from '../assets/photos/journey/aryanapay-transfer.webp'
+import paymentsImg from '../assets/photos/journey/aryanapay-payments.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 

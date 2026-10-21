@@ -1,6 +1,6 @@
 import Icon from './Icon.jsx'
-import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.png'
-import screenImg from '../assets/photos/journey/aryanapay-dashboard.png'
+import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.webp'
+import screenImg from '../assets/photos/journey/aryanapay-dashboard.webp'
 
 // DIRECT_URL: the direct download link of the app (e.g. the .apk file). Replace "#" with the real address.
 const DIRECT_URL = '#'
