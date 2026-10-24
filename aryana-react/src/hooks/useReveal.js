@@ -3,7 +3,8 @@ import { useEffect } from 'react'
 const revealSel = '.about-card > *, .app-banner, .trust-item, .faq-card, .art, .acc details'
 
 // Scroll-reveal animations
-export default function useReveal() {
+// `page` changes with the route, so the elements of the new page are picked up
+export default function useReveal(page) {
   useEffect(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -32,5 +33,5 @@ export default function useReveal() {
       timers.forEach(clearTimeout)
       els.forEach(el => el.classList.remove('reveal', 'in'))
     }
-  }, [])
+  }, [page])
 }

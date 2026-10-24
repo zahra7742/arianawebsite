@@ -6,12 +6,13 @@ import { navLinks } from '../data/content.js'
 
 const navHrefs = navLinks.map(l => l.href)
 
-export default function Header() {
+// route: 'home' | 'about'. On the About page there is no hero photo under the header, so it is the plain white one.
+export default function Header({ route = 'home' }) {
   const [open, setOpen] = useState(false)
   // at the very top the header shares the hero's blue; it turns white as soon as the page scrolls
   const [onHero, setOnHero] = useState(true)
   useEffect(() => {
-    const onScroll = () => setOnHero(window.scrollY < 12 || document.documentElement.hasAttribute('data-hero-covers'))
+    const onScroll = () => setOnHero(route === 'home' && (window.scrollY < 12 || document.documentElement.hasAttribute('data-hero-covers')))
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('herocover', onScroll)
@@ -19,8 +20,9 @@ export default function Header() {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('herocover', onScroll)
     }
-  }, [])
-  const active = useActiveSection(navHrefs, '#top')
+  }, [route])
+  const sectionActive = useActiveSection(navHrefs, '#top')
+  const active = route === 'about' ? '#/about' : sectionActive
 
   return (
     <header className={onHero ? 'site-header on-hero' : 'site-header'} id="top">

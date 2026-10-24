@@ -382,14 +382,19 @@ export default function Hero() {
       tl.to({}, { duration: 0.25 })
     }, stage)
     return () => {
-      document.documentElement.removeAttribute('data-hero-photo')
-      document.documentElement.removeAttribute('data-hero-pinned')
       setCovers(false)
       cleanup()
       stopLive()
       ScrollTrigger.removeEventListener('refreshInit', onRefresh)
       ctx.revert()
       stage.querySelector('.rv-clip').style.clipPath = ''
+      // last, after the revert (undoing a pin can still fire the scroll callbacks that set these again): the header
+      // must not keep the hero's state, e.g. on the About page
+      const root = document.documentElement
+      root.removeAttribute('data-hero-photo')
+      root.removeAttribute('data-hero-pinned')
+      root.removeAttribute('data-hero-covers')
+      window.dispatchEvent(new Event('herocover'))
     }
   }, [reduce, isPhone, simple])
 

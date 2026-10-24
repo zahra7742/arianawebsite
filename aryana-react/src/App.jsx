@@ -11,9 +11,12 @@ import Footer from './components/Footer.jsx'
 import { useEffect } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useReveal from './hooks/useReveal.js'
+import useRoute from './hooks/useRoute.js'
+import AboutPage from './components/AboutPage.jsx'
 
 export default function App() {
-  useReveal()
+  const route = useRoute()
+  useReveal(route)
 
   // the pinned sections measure the page once; after the window is resized (or the device mode is changed in the
   // browser tools) re-measure them all, so none of them is left with a stale height and overlaps the next section
@@ -27,17 +30,19 @@ export default function App() {
 
   return (
     <>
-      <Header />
-      <main>
-        <Hero />
-        <Goals />
-        <Journey />
-        <Trust />
-        <AppBanner />
-        <Features />
-        <Faq />
-        <Articles />
-      </main>
+      <Header key={route} route={route} />
+      {route === 'about' ? <AboutPage /> : (
+        <main>
+          <Hero />
+          <Goals />
+          <Journey />
+          <Trust />
+          <AppBanner />
+          <Features />
+          <Faq />
+          <Articles />
+        </main>
+      )}
       <Footer />
     </>
   )

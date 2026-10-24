@@ -4,7 +4,7 @@ export const navLinks = [
   { href: '#features-new', label: 'امکانات' },
   { href: '#app', label: 'اپلیکیشن' },
   { href: '#faq', label: 'سوالات متداول' },
-  { href: '#about', label: 'درباره ما' },
+  { href: '#/about', label: 'درباره ما' },
 ]
 
 // Journey: the three scroll-driven stages (text + phone screen)
@@ -102,7 +102,7 @@ export const footerColumns = [
   {
     title: 'درباره آریانا',
     links: [
-      { href: '#about', label: 'درباره ما' },
+      { href: '#/about', label: 'درباره ما' },
       { href: '#', label: 'فرصت‌های شغلی' },
       { href: '#', label: 'اخبار و مقالات' },
       { href: '#', label: 'تماس با ما' },

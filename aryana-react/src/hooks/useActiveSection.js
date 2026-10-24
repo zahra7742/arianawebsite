@@ -5,7 +5,7 @@ export default function useActiveSection(hrefs, initial) {
   const [active, setActive] = useState(initial)
 
   useEffect(() => {
-    const sections = [...new Set(hrefs)].map(h => document.querySelector(h)).filter(Boolean)
+    const sections = [...new Set(hrefs)].filter(h => !h.startsWith('#/')).map(h => document.querySelector(h)).filter(Boolean)
     const io = new IntersectionObserver(entries => {
       entries.forEach(en => {
         if (en.isIntersecting) setActive('#' + en.target.id)
