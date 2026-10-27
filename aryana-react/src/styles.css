@@ -4477,50 +4477,39 @@ img.gl-wm {
   margin-inline: auto;
 }
 
-/* hero: a dark band that fades into the white page */
+/* hero: short and plain, no background; the text is centred and the tiles follow it */
 .opt-hero {
-  position: relative;
-  padding-bottom: 0;
-  color: #fff;
-}
-.opt-hero-bg { /* the dark band, a layer of its own: AboutPage.jsx keeps its top under the header and shortens it with the scroll */
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 100%;
-  z-index: 0;
-  background:
-    radial-gradient(60% 50% at 78% 20%, rgba(41, 98, 168, 0.5), transparent 70%),
-    linear-gradient(180deg, #0f2442 0%, #12294a 45%, #2b4a74 72%, #f8f9fa 100%);
-  will-change: transform, height, opacity;
+  padding-top: 56px;
 }
 .opt-hero-grid {
-  position: relative;
-  z-index: 1;
+  text-align: center;
 }
-.opt-hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 24px;
-  padding-top: 64px;
+.opt-hero-copy {
+  max-width: 760px;
+  margin-inline: auto;
+}
+.opt-hero-copy .opt-tag {
+  color: #a96d0a;
 }
 .opt-hero-copy h1 {
-  margin: 18px 0 14px;
-  font-size: clamp(32px, 4.2vw, 56px);
+  margin: 16px 0 12px;
+  font-size: clamp(26px, 3.2vw, 38px);
   font-weight: 800;
-  line-height: 1.4;
+  line-height: 1.5;
+  color: var(--dark);
   text-wrap: balance;
 }
 .opt-hero-copy p {
-  max-width: 520px;
-  margin-bottom: 28px;
+  max-width: 600px;
+  margin: 0 auto 24px;
   font-size: 15px;
   line-height: 2.1;
-  color: rgba(255, 255, 255, 0.78);
+  color: #5b6b80;
 }
 .opt-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
 }
 .opt-btn {
@@ -4547,83 +4536,11 @@ img.gl-wm {
 }
 .opt-btn-ghost {
   background: transparent;
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.45);
+  color: var(--dark);
+  border-color: rgba(15, 36, 66, 0.3);
 }
 .opt-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-.opt-hero-art {
-  position: relative;
-  height: 520px;
-}
-.opt-ph {
-  position: absolute;
-  object-fit: cover;
-  border-radius: 22px;
-  box-shadow: 0 26px 50px rgba(0, 0, 0, 0.4);
-}
-.opt-ph-a {
-  top: 16px;
-  right: 4%;
-  width: 62%;
-  height: 330px;
-  object-position: 0% 50%;
-  rotate: -4deg;
-}
-.opt-ph-b {
-  bottom: 46px;
-  left: 2%;
-  width: 50%;
-  height: 230px;
-  object-position: 30% 50%;
-  background: #fff;
-  rotate: 5deg;
-  border: 5px solid #fff;
-}
-.opt-hero-card {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  z-index: 2;
-  width: 46%;
-  height: auto;
-  rotate: -12deg;
-  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.45));
-  animation: opt-float 7s ease-in-out infinite;
-}
-@keyframes opt-float {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -12px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .opt-hero-card { animation: none; }
-}
-.opt-badge {
-  position: absolute;
-  bottom: 26px;
-  right: 6%;
-  z-index: 2;
-  display: grid;
-  justify-items: center;
-  gap: 2px;
-  padding: 16px 22px;
-  border-radius: 18px;
-  background: var(--accent);
-  color: var(--dark);
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.3);
-}
-.opt-badge svg {
-  width: 22px;
-  height: 22px;
-}
-.opt-badge b {
-  font-size: 16px;
-  font-weight: 800;
-}
-.opt-badge small {
-  font-size: 12px;
-  font-weight: 600;
+  background: rgba(15, 36, 66, 0.06);
 }
 
 /* the three tiles at the bottom of the hero: a photo tile and a dark card with three points */
@@ -4633,8 +4550,7 @@ img.gl-wm {
   display: grid;
   grid-template-columns: 0.42fr 1fr;
   gap: 14px;
-  margin-top: 16px;
-  margin-bottom: -80px; /* the tiles lie half over the lower edge of the dark band */
+  margin-top: 40px;
 }
 .opt-tile-photo {
   position: relative;
@@ -4723,7 +4639,7 @@ img.gl-wm {
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: center;
-  margin-top: 150px; /* the tiles hang 80px below the dark band */
+  margin-top: 72px;
 }
 .opt-about-photo {
   display: block;
@@ -4934,16 +4850,8 @@ img.gl-wm {
 }
 
 @media (max-width: 980px) {
-  .opt-hero-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-  .opt-hero-art {
-    height: 460px;
-  }
   .opt-tiles {
     grid-template-columns: 1fr;
-    margin-bottom: -230px;
   }
   .opt-tile-photo {
     min-height: 130px;
@@ -4951,7 +4859,7 @@ img.gl-wm {
   .opt-about {
     grid-template-columns: 1fr;
     gap: 28px;
-    margin-top: 300px;
+    margin-top: 56px;
   }
   .opt-words {
     grid-template-columns: 1fr 1fr;
@@ -4968,14 +4876,8 @@ img.gl-wm {
   }
 }
 @media (max-width: 760px) {
-  .opt-hero-grid {
-    padding-top: 36px;
-  }
-  .opt-hero-art {
-    height: 400px;
-  }
-        .opt-badge {
-    padding: 12px 16px;
+  .opt-hero {
+    padding-top: 32px;
   }
   .opt-tile-dark {
     grid-template-columns: 1fr;

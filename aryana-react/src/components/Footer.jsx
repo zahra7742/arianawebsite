@@ -39,7 +39,6 @@ export default function Footer() {
             </div>
             <div className="ft-trust-title"><span>با مجوزهای رسمی و مورد اعتماد</span></div>
             <div className="ft-badges">
-              <div className="ft-badge"><img src={ftCbi} alt="" width="52" height="50" /><span>دارای مجوز از<br />بانک مرکزی جمهوری اسلامی ایران</span></div>
               <div className="ft-badge"><img src={ftEnamad} alt="eNAMAD" width="64" height="84" /></div>
             </div>
           </div>

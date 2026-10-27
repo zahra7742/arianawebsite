@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import Icon from './Icon.jsx'
 import cardFront from '../assets/photos/card-front.png'
 import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.webp'
@@ -44,47 +43,11 @@ function Phone({ shot, className = '' }) {
 // an anchor link would change the page (the route is the hash), so the buttons scroll by themselves
 const scrollTo = id => () => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
-const HEADER_H = 73 // height of the sticky site header
-
 export default function AboutPage() {
-  const heroRef = useRef(null)
-
-  // The dark band is a layer of its own (.opt-hero-bg). While the page scrolls, its top stays under the header and its
-  // lower edge rides with the two boxes (it is always the lower edge of the hero), so the band gets shorter as the
-  // boxes go up, and fades out when it is gone. The text and the collage fade with it. Not with reduced motion.
-  useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const hero = heroRef.current
-    const bg = hero.querySelector('.opt-hero-bg')
-    const grid = hero.querySelector('.opt-hero-grid')
-    let frame = 0
-    const update = () => {
-      frame = 0
-      const heroTop = hero.getBoundingClientRect().top
-      const top = Math.max(heroTop, HEADER_H)
-      const bottom = heroTop + hero.offsetHeight
-      const h = Math.max(0, bottom - top)
-      bg.style.transform = `translateY(${top - heroTop}px)`
-      bg.style.height = `${h}px`
-      bg.style.opacity = String(Math.min(1, h / 180))
-      grid.style.opacity = String(Math.max(0, 1 - (top - heroTop) / 320))
-    }
-    const request = () => { if (!frame) frame = requestAnimationFrame(update) }
-    update()
-    window.addEventListener('scroll', request, { passive: true })
-    window.addEventListener('resize', request)
-    return () => {
-      cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', request)
-      window.removeEventListener('resize', request)
-    }
-  }, [])
-
   return (
     <main className="opt">
-      {/* hero: a dark band, the text about us on one side and a collage (two photos and the Aryana card) on the other */}
-      <section className="opt-hero" ref={heroRef}>
-        <div className="opt-hero-bg" aria-hidden="true" />
+      {/* hero: a short, plain block (no background): the text about us, centred, and the three tiles under it */}
+      <section className="opt-hero">
         <div className="container opt-hero-grid">
           <div className="opt-hero-copy">
             <span className="opt-tag">درباره آریانا</span>
@@ -97,12 +60,6 @@ export default function AboutPage() {
               <button type="button" className="opt-btn" onClick={scrollTo('opt-about')}>داستان ما <Icon name="arrow" /></button>
               <button type="button" className="opt-btn opt-btn-ghost" onClick={scrollTo('opt-values')}>ارزش‌های ما</button>
             </div>
-          </div>
-          <div className="opt-hero-art" aria-hidden="true">
-            <img className="opt-ph opt-ph-a" src={heroPhoto} alt="" />
-            <img className="opt-ph opt-ph-b" src={skylineImg} alt="" />
-            <img className="opt-hero-card" src={cardFront} alt="" width="800" height="504" />
-            <span className="opt-badge"><Icon name="handshake" /><b>همراه شما</b><small>هر روز</small></span>
           </div>
         </div>
 
