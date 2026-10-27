@@ -1,7 +1,6 @@
 import Icon from './Icon.jsx'
 import { footerColumns, legalLinks, socials } from '../data/content.js'
 import ftLogo from '../assets/logo/aryana-logo.png'
-import ftCbi from '../assets/photos/ft-cbi.png'
 import ftEnamad from '../assets/photos/ft-enamad.png'
 
 export default function Footer() {
