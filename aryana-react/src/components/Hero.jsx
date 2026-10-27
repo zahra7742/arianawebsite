@@ -32,7 +32,15 @@ function Photo({ src, className }) {
 }
 
 // The bank card shown in the big outlined frame: a vertical card, standing on the hero photo
-function BankCard() {
+// land: the same card lying on its long side (the hero starts with it, and it turns upright into the standing card)
+function BankCard({ land = false }) {
+  if (land) {
+    return (
+      <div className="rv-land" aria-hidden="true">
+        <BankCard />
+      </div>
+    )
+  }
   return (
     <div className="rv-bank" aria-hidden="true">
       <div className="rv-bank-top"><img src={logoLight} alt="" /></div>
@@ -258,7 +266,7 @@ export default function Hero() {
           trigger: stage,
           refreshPriority: 3, // the pins refresh in page order (hero, goals, journey), whatever order they were created in
           start: 'top top',
-          end: () => `+=${window.innerHeight * 3}`,
+          end: () => `+=${window.innerHeight * 3.8}`, // the first turn of the card (1.1 s of the timeline) comes before the old animation, whose pace stays as it was
           pin: true,
           // short catch-up: enough to ease out wheel steps, without the floaty lag of a long scrub
           scrub: 0.8,
@@ -366,6 +374,17 @@ export default function Hero() {
       tl.fromTo(q('.rv-app-slot'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: true }, 2.9)
       // a short hold at the end, so the finished screen rests before the page scrolls on
       tl.to({}, { duration: 0.25 })
+      // The hero starts with the card lying down: the old animation is moved later by the length of this first turn, during
+      // which the lying card turns a quarter round and gives way to the standing card at the same place.
+      const TURN = 1.1
+      tl.shiftChildren(TURN, true)
+      const land = q('.rv-land')[0]
+      gsap.set(land, { xPercent: -50, yPercent: -50 })
+      // (it starts a little lower than the standing card's place and rises into it while it turns)
+      tl.fromTo(land, { rotation: 0, y: 90 }, { rotation: 90, y: 0, duration: TURN, ease: 'power2.inOut' }, 0)
+      tl.fromTo(land, { autoAlpha: 1 }, { autoAlpha: 0, duration: TURN * 0.35, ease: 'none' }, TURN * 0.65)
+      tl.fromTo(q('.rv-frame > .rv-bank'), { autoAlpha: 0 }, { autoAlpha: 1, duration: TURN * 0.45, ease: 'none' }, TURN * 0.55)
+      tl.fromTo(q('.rv-frame'), { '--frame-on': 0 }, { '--frame-on': 1, duration: TURN * 0.45, ease: 'none' }, TURN * 0.55)
     }, stage)
     // The animation measures the middle card's place once per refresh. The text above it changes height when the font arrives (or
     // when the copy wraps differently), which moves the card; measure again then, so the photo and the card keep landing together.
@@ -468,6 +487,7 @@ function MiddleSlot() {
       <Photo src={PHOTOS.hero} className="hero slot-photo" />
       <div className="rv-frame">
         <BankCard />
+        <BankCard land />
       </div>
       {/* once the card has landed it turns into the app screen */}
       <PhoneBody shot={cardsShot} className="rv-app-slot" />
