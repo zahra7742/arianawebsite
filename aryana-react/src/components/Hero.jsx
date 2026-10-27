@@ -5,6 +5,10 @@ import Icon from './Icon.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import logoLight from '../assets/logo/aryana-logo-light.png'
 import heroPhoto from '../assets/photos/hero/tehran-hero.webp'
+import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.webp'
+import walletShot from '../assets/photos/journey/aryanapay-dashboard.webp'
+import chargeShot from '../assets/photos/journey/aryanapay-transfer.webp'
+import cardsShot from '../assets/photos/journey/aryanapay-payments.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -12,23 +16,13 @@ const HEADER_H = 73 // height of the sticky site header
 
 // PHOTOS: set these to imported image files to replace the placeholder gradients, e.g.
 //   import heroPhoto from '../assets/photos/hero/person.jpg'  →  const PHOTOS = { hero: heroPhoto, … }
-// hero: full-screen, at least ~1920px wide; side cards: portrait, at least ~600×850px.
-const PHOTOS = { hero: heroPhoto, sideA: null, sideB: null }
+// hero: full-screen, at least ~1920px wide.
+const PHOTOS = { hero: heroPhoto }
 
-// ILLUSTRATIVE DATA: balances and transactions below are sample figures, not real AryanaPay data.
+// The three cards of the second screen are screens of the app: the cards screen in the middle, the wallet and quick charge at its sides.
 const SIDE_CARDS = [
-  {
-    key: 'sideA',
-    label: 'حساب ارزی · دلار',
-    balance: '۳۱۲ دلار',
-    row: { icon: 'cart', title: 'قهوه در کافه', sub: 'دیروز، ۰۹:۰۲', amount: '−۸۵٬۰۰۰' },
-  },
-  {
-    key: 'sideB',
-    label: 'حساب شخصی',
-    balance: '۲٬۳۵۰٬۰۰۰ تومان',
-    row: { icon: 'bolt', title: 'قبض برق', sub: 'سررسید امروز', amount: '−۳۴۰٬۰۰۰' },
-  },
+  { label: 'کیف پول آریانا پی', shot: walletShot },
+  { label: 'شارژ سریع آریانا پی', shot: chargeShot },
 ]
 
 function Photo({ src, className }) {
@@ -79,17 +73,6 @@ function WaveGlow() {
       <path className="rv-wave-glow b" d={WAVE_B} pathLength="1000" />
       <path className="rv-wave-core b" d={WAVE_B} pathLength="1000" />
     </svg>
-  )
-}
-
-// Balance overlay shared by the hero frame and the cards
-function Balance({ label, amount }) {
-  return (
-    <div className="rv-balance">
-      <span>{label}</span>
-      <b>{amount}</b>
-      <em>حساب‌ها</em>
-    </div>
   )
 }
 
@@ -377,11 +360,24 @@ export default function Hero() {
       })
       tl.from(q('.rv-side.a'), fromSide(1), 2.6) // right-hand card (first in RTL), from the right edge
       tl.from(q('.rv-side.b'), fromSide(-1), 2.75) // left-hand card, from the left edge
-      tl.from(q('.rv-slot-foot'), { autoAlpha: 0, y: 24, duration: 0.7 }, 3.2)
+      // the landed card turns into the app screen
+      // (the photo that landed behind it goes too: a phone's rounded body would show its corners)
+      tl.to(q('.rv-frame, .rv-clip'), { autoAlpha: 0, duration: 0.8 }, 2.9)
+      tl.fromTo(q('.rv-app-slot'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: true }, 2.9)
       // a short hold at the end, so the finished screen rests before the page scrolls on
       tl.to({}, { duration: 0.25 })
     }, stage)
+    // The animation measures the middle card's place once per refresh. The text above it changes height when the font arrives (or
+    // when the copy wraps differently), which moves the card; measure again then, so the photo and the card keep landing together.
+    let remeasure = 0
+    const scheduleRefresh = () => { clearTimeout(remeasure); remeasure = setTimeout(() => ScrollTrigger.refresh(), 150) }
+    document.fonts?.ready.then(scheduleRefresh)
+    const head = stage.querySelector('.rv-next-head')
+    const headObserver = !simple && head && typeof ResizeObserver !== 'undefined' ? new ResizeObserver(scheduleRefresh) : null
+    headObserver?.observe(head)
     return () => {
+      clearTimeout(remeasure)
+      headObserver?.disconnect()
       setCovers(false)
       cleanup()
       stopLive()
@@ -431,8 +427,8 @@ export default function Hero() {
 
         <div className="rv-next container">
           <div className="rv-next-head">
-            <h2>مدیریت پول، به شکلی تازه</h2>
-            <p>هوشمندانه خرج کنید، سریع انتقال دهید و پس‌اندازتان را رشد دهید — همه با آریانا کارت.</p>
+            <h2>آریانا کارت، ریالی و دلاری</h2>
+            <p>با کارت ریالی کارت‌به‌کارت کنید و در فروشگاه‌ها و سایت‌ها خرید کنید؛ با کارت دلاری، حسابتان را دلاری شارژ کنید و دلار انتقال دهید.</p>
             <a href="#app" className="rv-btn">دریافت آریانا کارت</a>
           </div>
 
@@ -447,21 +443,25 @@ export default function Hero() {
   )
 }
 
+// A phone: the app screen inside the transparent phone-frame picture (the frame's box and screen are measured on the picture, see .jr-device)
+function PhoneBody({ shot, className = '' }) {
+  return (
+    <div className={`rv-device ${className}`}>
+      <div className="rv-screen"><img className="rv-app" src={shot} alt="" width="640" height="1226" loading="lazy" /></div>
+      <img className="rv-device-frame" src={frameImg} alt="" width="1278" height="1230" />
+    </div>
+  )
+}
+
 function SideCard({ card, side }) {
   return (
     <article className={`rv-side ${side}`} aria-label={card.label}>
-      <Photo src={PHOTOS[card.key]} className={card.key} />
-      <Balance label={card.label} amount={card.balance} />
-      <div className="rv-row">
-        <i><Icon name={card.row.icon} /></i>
-        <span><b>{card.row.title}</b><small>{card.row.sub}</small></span>
-        <em>{card.row.amount}</em>
-      </div>
+      <PhoneBody shot={card.shot} />
     </article>
   )
 }
 
-// The middle card: the hero photo lands here, and the hero's outlined card shrinks onto it.
+// The middle card: the hero photo lands here, the hero's outlined card shrinks onto it and then becomes the app screen.
 function MiddleSlot() {
   return (
     <div className="rv-slot">
@@ -469,10 +469,8 @@ function MiddleSlot() {
       <div className="rv-frame">
         <BankCard />
       </div>
-      <div className="rv-slot-foot">
-        <i><Icon name="shield" /></i>
-        <span>پرداخت امن</span>
-      </div>
+      {/* once the card has landed it turns into the app screen */}
+      <PhoneBody shot={cardsShot} className="rv-app-slot" />
     </div>
   )
 }

@@ -1,16 +1,16 @@
 import { useEffect, useRef } from 'react'
 import useMediaQuery from '../hooks/useMediaQuery.js'
 import Icon from './Icon.jsx'
-import cardFront from '../assets/photos/card-front.png'
-import app from '../assets/photos/app.jpg'
+import cardsShot from '../assets/photos/feature-cards.webp'
+import walletShot from '../assets/photos/feature-wallet.webp'
 
-// Four light cards in two rows (on phones the cards with a photo and without one alternate: a, b, d, c), each with an icon tile, a title and a short text; the two wide ones have a photo that fades into the card.
-// SAMPLE TEXT + PHOTOS: replace with your own.
+// Four light cards in two rows (on phones the cards with a photo and without one alternate: a, b, d, c), each with an icon tile, a title and a short text; the two wide ones have a whole block of an app screen (the card, the wallet) that fades into the card.
+// SAMPLE TEXT: replace with your own. The two pictures are crops of the app screens, with the shape of the photo box (about 7:4), so nothing in them is cut.
 const CARDS = [
-  { id: 'a', icon: 'bolt', title: 'انتقال سریع', text: 'پول را در چند ثانیه و به همان لحظه به کارت یا حساب دیگر بفرستید.' },
-  { id: 'b', icon: 'phone', title: 'مدیریت از اپلیکیشن', text: 'موجودی، تراکنش‌ها و گزارش خرج‌هایتان را هر لحظه و هرجا از روی گوشی ببینید.', img: app },
+  { id: 'a', icon: 'bolt', title: 'انتقال و شارژ سریع', text: 'کارت ریالی و دلاری خود را شارژ کنید و پول را به همان لحظه به کارت یا حساب دیگر بفرستید.' },
+  { id: 'b', icon: 'phone', title: 'مدیریت از اپلیکیشن', text: 'موجودی، تراکنش‌ها و گزارش خرج‌هایتان را هر لحظه و هرجا از روی گوشی ببینید.', img: cardsShot, pos: '50% 50%' },
   { id: 'd', icon: 'shield', title: 'امنیت و اطمینان', text: 'هر تراکنش با لایه‌های امنیتی بانکی محافظت می‌شود.' },
-  { id: 'c', icon: 'card', title: 'پرداخت و خرید آسان', text: 'با یک کارت بانکی ویژه شما، هم در فروشگاه و هم آنلاین پرداخت کنید.', img: cardFront },
+  { id: 'c', icon: 'wallet', title: 'کیف پول', text: 'با یک کارت بانکی ویژه شما، هم در فروشگاه و هم آنلاین پرداخت کنید.', img: walletShot, pos: '50% 50%' },
 ]
 
 export default function Features() {
@@ -135,11 +135,11 @@ export default function Features() {
     <section ref={ref} className="rsn container" aria-label="ویژگی‌های آریانا کارت">
       <div className="rsn-band">
         <div className="rsn-grid">
-          {CARDS.map(({ id, icon, title, text, img }) => (
+          {CARDS.map(({ id, icon, title, text, img, pos }) => (
             <div key={id} data-id={id} className={`rsn-slot ${id}`}>
               <div className="rsn-wrap">
                 <article className={`rsn-card ${id}`}>
-                  {img && <img className="rsn-photo" src={img} alt="" loading="lazy" />}
+                  {img && <img className="rsn-photo" src={img} alt="" style={{ objectPosition: pos }} loading="lazy" />}
                   <span className="rsn-ic"><Icon name={icon} /></span>
                   <div className="rsn-info">
                     <h3>{title}</h3>

@@ -1,6 +1,6 @@
 import Icon from './Icon.jsx'
 import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.webp'
-import screenImg from '../assets/photos/journey/aryanapay-dashboard.webp'
+import screenImg from '../assets/photos/journey/aryanapay-payments.webp'
 
 // DIRECT_URL: the direct download link of the app (e.g. the .apk file). Replace "#" with the real address.
 const DIRECT_URL = '#'
@@ -22,7 +22,7 @@ export default function AppBanner() {
         <div className="app-phones app-phones-3d" aria-hidden="true">
           <div className="jr-device">
             <div className="jr-device-screen">
-              <img className="jr-shot on" src={screenImg} alt="" width="410" height="869" loading="lazy" />
+              <img className="jr-shot on" src={screenImg} alt="" width="640" height="1226" loading="lazy" />
             </div>
             <img className="jr-device-frame" src={frameImg} alt="" width="1278" height="1230" loading="lazy" />
           </div>

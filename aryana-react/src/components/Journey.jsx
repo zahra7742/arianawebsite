@@ -12,7 +12,7 @@ import paymentsImg from '../assets/photos/journey/aryanapay-payments.webp'
 gsap.registerPlugin(ScrollTrigger)
 
 const HEADER_H = 73 // height of the sticky site header
-const screens = [dashboardImg, transferImg, paymentsImg] // one per stage, same order as `journey`
+const screens = [paymentsImg, transferImg, dashboardImg] // one per stage, same order as `journey`: cards, quick charge, wallet
 
 // Phone frame (fixed size and angle) with the three screenshots layered in its screen;
 // only opacity changes between stages, so the phone never resizes or shifts.
@@ -21,7 +21,7 @@ function Device({ stage }) {
     <div className="jr-device">
       <div className="jr-device-screen">
         {screens.map((src, i) => (
-          <img key={src} src={src} alt="" width="410" height="869" className={i === stage ? 'jr-shot on' : 'jr-shot'} />
+          <img key={src} src={src} alt="" width="640" height="1226" className={i === stage ? 'jr-shot on' : 'jr-shot'} />
         ))}
       </div>
       <img className="jr-device-frame" src={frameImg} alt="" width="1278" height="1230" />
@@ -107,7 +107,7 @@ function StaticJourney() {
   )
 }
 
-// Phone whose screen scrolls: the status bar and bottom nav stay put (taken from the dashboard
+// Phone whose screen scrolls: the status bar and bottom nav stay put (taken from the first
 // screenshot), and the three screenshots' middle parts sit in one tall strip that GSAP moves up.
 function ScrollDevice({ stripRef }) {
   return (
@@ -116,12 +116,12 @@ function ScrollDevice({ stripRef }) {
         <div className="jr-sv">
           <div className="jr-strip" ref={stripRef}>
             {screens.map(src => (
-              <div key={src} className="jr-strip-item"><img src={src} alt="" width="410" height="869" /></div>
+              <div key={src} className="jr-strip-item"><img src={src} alt="" width="640" height="1226" /></div>
             ))}
           </div>
         </div>
-        <img className="jr-band top" src={dashboardImg} alt="" width="410" height="869" />
-        <img className="jr-band bottom" src={dashboardImg} alt="" width="410" height="869" />
+        <img className="jr-band top" src={screens[0]} alt="" width="640" height="1226" />
+        <img className="jr-band bottom" src={screens[0]} alt="" width="640" height="1226" />
       </div>
       <img className="jr-device-frame" src={frameImg} alt="" width="1278" height="1230" />
     </div>

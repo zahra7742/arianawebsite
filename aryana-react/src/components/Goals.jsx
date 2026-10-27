@@ -93,9 +93,9 @@ export default function Goals() {
         </div>
 
         <div className="gl-body container">
-          <h2>زندگی، همراه با هدف‌هایتان</h2>
-          <p className="gl-lead">برای هر هدف یک حساب جدا بسازید و مسیر رسیدن به آن را در اپلیکیشن آریانا پی دنبال کنید.</p>
-          <p className="gl-note">مبلغ‌ها و هدف‌های نشان‌داده‌شده نمونه هستند و فقط برای نمایش آورده شده‌اند.</p>
+          <h2>یک کارت برای همه‌ی اپلیکیشن‌هایتان</h2>
+          <p className="gl-lead">با آریانا کارت از فروشگاه‌های مختلف خرید کنید، هزینه‌ی اپلیکیشن‌ها و ابزارهای هوش مصنوعی را بپردازید و حساب‌هایتان را همیشه شارژ نگه دارید.</p>
+          <p className="gl-note">از فروشگاه تا هوش مصنوعی؛ همه از یک کارت.</p>
           <a href="#app" className="gl-cta">دانلود اپلیکیشن</a>
 
           {/* the Aryana card from the brandbook, drawn in CSS: the front over the back (with its magnetic stripe),
