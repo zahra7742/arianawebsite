@@ -2735,6 +2735,7 @@ section {
   border-radius: 22px;
   border: 1.5px solid rgb(255 255 255 / calc(0.75 * var(--outline)));
   container-type: inline-size; /* the bank card inside scales with the frame */
+  overflow: hidden;
   transform-origin: top center;
 }
 .rv-balance {
@@ -2930,13 +2931,15 @@ section {
     z-index: 2; /* in front: the other card falls from behind it */
     /* leans a little towards the card that falls, and trembles when it lands */
     transform-origin: 50% 100%;
-    animation: rv-card-in 1.3s cubic-bezier(0.22, 0.7, 0.25, 1) both, rv-card-lean 3.4s 1.1s both, rv-card-shake 1.4s 3.45s;
+    animation: rv-show 0.01s 2.3s both, rv-card-lean 3.4s 2.3s both, rv-card-shake 1.4s 4.65s;
     height: var(--ch);
     aspect-ratio: 0.62;
     translate: calc(var(--ch) * -0.5 + 7px) 0;
     border: 1.5px solid rgb(255 255 255 / 0.75);
-    border-radius: 14px;
-    container-type: inline-size; /* the text inside scales with the card */
+    border-radius: 12px;
+    overflow: hidden;
+    container-type: inline-size; /* the card picture inside scales with the card */
+    --art-w: 161.29cqw; /* the standing card's shape: its height (100 / 0.62) in cqw */
   }
   .rv-hero-card {
     /* the standing card (0.62 wide) and the fallen one (1.0 wide) side by side must fit the screen */
@@ -2953,9 +2956,10 @@ section {
     translate: calc(var(--ch) * -0.5 + 7px) 0;
     transform-origin: 100% 100%;
     transform: translate(-14px, 0) rotate(90deg);
-    animation: rv-card-in 1.3s cubic-bezier(0.22, 0.7, 0.25, 1) both, rv-card-fall 3.4s 1.1s both, rv-card-shake 1.4s 3.45s;
+    animation: rv-show 0.01s 2.3s both, rv-card-fall 3.4s 2.3s both, rv-card-shake 1.4s 4.65s;
+    --art-w: 161.29cqw;
     border: 1.5px solid rgb(255 255 255 / 0.75);
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
     container-type: inline-size;
   }
@@ -2967,12 +2971,48 @@ section {
     width: var(--ch);
     height: calc(var(--ch) * 0.62);
     transform: translate(-50%, -50%) rotate(-90deg);
-    animation: rv-photo-in 3.4s 1.1s both;
+    animation: rv-photo-in 3.4s 2.3s both;
   }
-  /* both cards slide in from the left edge of the screen, upright, before anything else happens */
-  @keyframes rv-card-in {
+  /* the flat card lies in the middle of the hero, then turns a quarter turn into the standing card's place and shape
+     (the outlined box narrows with it, see .rv-flip-in); where it ends the standing card (and the card behind it) appears */
+  .rv-hero-flip {
+    grid-area: 1 / 1;
+    z-index: 3;
+    width: var(--ch);
+    aspect-ratio: 1600 / 1005;
+    pointer-events: none;
+    animation: rv-flip 1.1s 1.2s cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
+  .rv-hero-flip .rv-flip-in {
+    border-radius: 12px;
+  }
+  .rv-hero-flip .rv-flip-img.clean {
+    animation: rv-flip-clean 0.5s 1.35s both;
+  }
+  @keyframes rv-flip {
     from {
-      translate: calc(var(--ch) * -0.5 + 7px - 100vw) 0;
+      translate: 0 0;
+      rotate: 0deg;
+      scale: 1.4;
+    }
+    to {
+      translate: calc(var(--ch) * -0.5 + 7px) 0;
+      rotate: 90deg;
+      scale: 1;
+      visibility: hidden;
+    }
+  }
+  @keyframes rv-flip-clean {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes rv-show {
+    from {
+      visibility: hidden;
+    }
+    to {
+      visibility: visible;
     }
   }
   /* slow and smooth: it waits, leans over gently, picks up speed, touches down with one soft rebound */
@@ -3021,7 +3061,7 @@ section {
   }
   /* the download button grows from a tiny dot, in place, once the fallen card has touched down */
   .rv-copy .rv-btn {
-    animation: rv-btn-grow 2s cubic-bezier(0.4, 0, 0.2, 1) 3.3s both;
+    animation: rv-btn-grow 2s cubic-bezier(0.4, 0, 0.2, 1) 4.5s both;
   }
   @keyframes rv-btn-grow {
     from {
@@ -3039,8 +3079,13 @@ section {
   /* off screen: animations paused at their end pose; coming back into view restarts them (see Hero.jsx) */
   .rv-hero-card.rv-reset .rv-hero-card-in,
   .rv-hero-card.rv-reset .rv-hero-fall,
-  .rv-hero-card.rv-reset .rv-hero-fall-photo {
+  .rv-hero-card.rv-reset .rv-hero-fall-photo,
+  .rv-hero-card.rv-reset .rv-hero-flip,
+  .rv-hero-card.rv-reset .rv-hero-flip .rv-flip-img.clean {
     animation: none;
+  }
+  .rv-hero-card.rv-reset .rv-hero-flip {
+    visibility: hidden;
   }
   @media (prefers-reduced-motion: reduce) {
     .rv-copy .rv-btn,
@@ -3048,6 +3093,9 @@ section {
     .rv-hero-fall,
     .rv-hero-fall-photo {
       animation: none;
+    }
+    .rv-hero-flip {
+      display: none;
     }
   }
   /* no licence / secure-payment strip under the card on phones */
@@ -3108,71 +3156,53 @@ section {
   --outline: 0;
 }
 
-/* the bank card in the big outlined frame (it fills the whole frame; sizes in cqw of the frame) */
-.rv-bank {
+/* the bank card in the big outlined frame: the card picture (without its numbers) turned on its side so that it
+   stands, cropped a little at the sides by the frame. --art-w is the picture's width = the frame's height, in cqw of the frame */
+.rv-frame {
+  --art-w: 179.24cqw; /* the middle card's shape, 660 x 1183 */
+}
+.rv-card-art {
   position: absolute;
-  inset: 0; /* fills the whole frame, top to bottom */
+  left: 50%;
+  top: 50%;
+  width: var(--art-w);
+  max-width: none;
+  height: auto;
+  translate: -50% -50%;
+  rotate: 90deg;
+  pointer-events: none;
+}
+
+/* the flat card that opens the hero: the card picture with its numbers, and the same picture without them fading in
+   over it. Desktop: .rv-flip is placed, turned and cropped by the timeline (Hero.jsx); phones: .rv-hero-flip turns by itself.
+   .rv-flip-in is the outlined box; its height narrows while the card turns, so it ends as the standing card's frame */
+.rv-flip {
+  position: absolute;
+  z-index: 2;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  padding: 10cqw 9cqw 9cqw;
-  border-radius: inherit;
-  color: #fff;
-  background:
-    radial-gradient(90% 55% at 85% 8%, rgba(120, 170, 255, 0.35), transparent 70%),
-    linear-gradient(165deg, #214b86 0%, #12294a 55%, #0b1b33 100%);
-  direction: ltr;
-  text-shadow: none;
+  place-items: center;
+  pointer-events: none;
+  will-change: transform;
 }
-.rv-bank-top {
-  display: flex;
-  align-items: center;
-  gap: 2cqw;
-  font-family: 'Poppins', sans-serif;
-  font-size: 8cqw;
-  font-weight: 700;
+.rv-flip-in {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1.5px solid rgb(255 255 255 / 0.75);
+  border-radius: 3%;
 }
-.rv-bank-top svg {
-  width: 10cqw;
-  height: 10cqw;
-  color: #fff;
+.rv-flip-img {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: auto;
+  translate: 0 -50%;
 }
-.rv-bank-mid {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 14cqw;
-}
-.rv-chip {
-  width: 17cqw;
-  height: 12.5cqw;
-  border-radius: 2.4cqw;
-  background: linear-gradient(135deg, #f3dc9c, #c99a3d 55%, #e9c776);
-  box-shadow: inset 0 0 0 0.3cqw rgba(0, 0, 0, 0.18);
-}
-.rv-bank-mid svg {
-  width: 11cqw;
-  height: 11cqw;
-  opacity: 0.85;
-}
-.rv-bank-num {
-  align-self: end;
-  display: grid;
-  gap: 2.4cqw;
-  font-family: 'Poppins', sans-serif;
-  font-size: 11.5cqw;
-  font-weight: 600;
-  letter-spacing: 0.5cqw;
-}
-.rv-bank-foot {
-  display: grid;
-  margin-top: 6cqw;
-  font-size: 7cqw;
-  font-weight: 600;
-}
-.rv-bank-foot small {
-  font-size: 4cqw;
-  opacity: 0.65;
-  letter-spacing: 0.4cqw;
+.rv-static .rv-flip {
+  display: none;
 }
 
 /* the golden wave of the hero photo gets light travelling along it */
@@ -3794,7 +3824,6 @@ section {
     height: 30px;
   }
 }
-.rv-bank-top img,
 .gl-bank .gl-bank-top img {
   display: block;
   width: 46cqw;

@@ -3,8 +3,9 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Icon from './Icon.jsx'
 import useMediaQuery from '../hooks/useMediaQuery.js'
-import logoLight from '../assets/logo/aryana-logo-light.png'
 import heroPhoto from '../assets/photos/hero/tehran-hero.webp'
+import cardFull from '../assets/photos/hero/aryana-card.webp'
+import cardClean from '../assets/photos/hero/aryana-card-clean.webp'
 import frameImg from '../assets/photos/journey/Transparent iPhone Frame Mockup.webp'
 import walletShot from '../assets/photos/journey/aryanapay-dashboard.webp'
 import chargeShot from '../assets/photos/journey/aryanapay-transfer.webp'
@@ -12,6 +13,7 @@ import cardsShot from '../assets/photos/journey/aryanapay-payments.webp'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const HERO_RADIUS = 14 // corner radius of the card on the hero (it grows to 22 as it lands in the middle card)
 const HEADER_H = 73 // height of the sticky site header
 
 // PHOTOS: set these to imported image files to replace the placeholder gradients, e.g.
@@ -31,18 +33,21 @@ function Photo({ src, className }) {
     : <div className={`rv-photo ${className} placeholder`} />
 }
 
-// The bank card shown in the big outlined frame: a vertical card, standing on the hero photo
+const CARD_RATIO = 1600 / 1005 // width / height of the card pictures
+
+// The bank card shown in the big outlined frame: the card picture without its numbers, turned on its side so it
+// stands (CSS rotates it and sizes it from the frame's width)
 function BankCard() {
+  return <img className="rv-card-art" src={cardClean} alt="" aria-hidden="true" />
+}
+
+// The horizontal card, with its numbers: it opens the hero and turns into the vertical one (see .rv-flip)
+function FlatCard() {
   return (
-    <div className="rv-bank" aria-hidden="true">
-      <div className="rv-bank-top"><img src={logoLight} alt="" /></div>
-      <div className="rv-bank-mid">
-        <i className="rv-chip" />
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M8 7c2.5 3 2.5 7 0 10M12 5c4 4 4 10 0 14M16 3c5.5 5 5.5 13 0 18" /></svg>
-      </div>
-      <div className="rv-bank-num"><span>1234 5678</span><span>9012 3456</span></div>
-      <div className="rv-bank-foot"><small>VALID THRU</small><span>12/28</span></div>
-    </div>
+    <>
+      <img className="rv-flip-img" src={cardFull} alt="" />
+      <img className="rv-flip-img clean" src={cardClean} alt="" />
+    </>
   )
 }
 
@@ -252,13 +257,16 @@ export default function Hero() {
         }
         return
       }
-      const tl = gsap.timeline({
+      // `outer` is the scroll-driven timeline: first the flat card turns upright (`intro`), then `tl`, the transition proper
+      const INTRO = 1
+      let tl = null // built below (the scroll trigger already asks for its end while `outer` is created)
+      const outer = gsap.timeline({
         defaults: { ease: 'sine.inOut', force3D: true },
         scrollTrigger: {
           trigger: stage,
           refreshPriority: 3, // the pins refresh in page order (hero, goals, journey), whatever order they were created in
           start: 'top top',
-          end: () => `+=${window.innerHeight * 3}`,
+          end: () => `+=${window.innerHeight * 3 * (1 + INTRO / (tl ? tl.duration() : 4.1))}`, // the transition keeps its scroll length
           pin: true,
           // short catch-up: enough to ease out wheel steps, without the floaty lag of a long scrub
           scrub: 0.8,
@@ -278,6 +286,7 @@ export default function Hero() {
           },
         },
       })
+      tl = gsap.timeline({ defaults: { ease: 'sine.inOut', force3D: true } })
       // hero copy drifts up and out first
       tl.to(q('.rv-copy'), { autoAlpha: 0, y: -80, duration: 0.9 }, 0)
       // where the hero's outlined card sits on the first screen: fully on screen, beside the headline
@@ -336,14 +345,14 @@ export default function Hero() {
       tl.fromTo(q('.rv-frame'),
         {
           scale: () => heroRect().scale,
-          // the frame is scaled down, so counter-scale its radius to keep the corners at 22px on screen
-          borderRadius: () => 22 / heroRect().scale,
+          // the frame is scaled down, so counter-scale its radius to keep the corners at HERO_RADIUS on screen
+          borderRadius: () => `${HERO_RADIUS / heroRect().scale}px`, // with the unit: a bare number would be taken as a percentage
           // the card scales around its top centre, so line up centres horizontally and tops vertically
           x: () => { const r = heroRect(); const c = card(); return r.x + r.w / 2 - (c.x + c.w / 2) },
           y: () => { const r = heroRect(); const c = card(); return r.y - c.y },
           '--outline': 1,
         },
-        { scale: 1, borderRadius: 22, x: 0, y: 0, '--outline': 0, duration: 1, ease: 'sine.out', immediateRender: true }, 1.8)
+        { scale: 1, borderRadius: '22px', x: 0, y: 0, '--outline': 0, duration: 1, ease: 'sine.out', immediateRender: true }, 1.8)
       // a gentle zoom-out of the photo while it closes in (it always still covers the whole stage)
       tl.fromTo(q('.rv-clip .rv-photo, .rv-clip .rv-wave'), { scale: 1.1 }, { scale: 1, duration: 2.8 }, 0)
       // the next screen rises in once the photo has landed: heading first, then the side cards one by one
@@ -366,6 +375,57 @@ export default function Hero() {
       tl.fromTo(q('.rv-app-slot'), { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.8, immediateRender: true }, 2.9)
       // a short hold at the end, so the finished screen rests before the page scrolls on
       tl.to({}, { duration: 0.25 })
+
+      // intro: the flat card with its numbers lies where the standing card will be; it turns a quarter turn, its numbers
+      // dissolve, it narrows to the standing card's shape, and then the outlined frame takes over from it
+      const flipEl = q('.rv-flip')[0]
+      const flipIn = q('.rv-flip-in')[0]
+      const flipClean = q('.rv-flip-img.clean')[0]
+      const frameEl = q('.rv-frame')[0]
+      const fl = { t: 0 }
+      let fg = null // measured once per refresh
+      const flipGeo = () => {
+        const c = card()
+        const r = heroRect()
+        const s = stage.getBoundingClientRect()
+        const rg = document.createRange()
+        rg.selectNodeContents(q('.rv-copy h1')[0])
+        // the flat card stays clear of the headline and the paragraph
+        const L = Math.min(rg.getBoundingClientRect().left, q('.rv-copy p')[0].getBoundingClientRect().left) - s.left
+        const cx = r.x + r.w / 2
+        const cy = r.y + r.h / 2
+        const Fw = r.h // long side of the card = height of the standing card
+        const Fh = Fw / CARD_RATIO
+        const Wh = Math.min(r.h * 0.9, c.sw * 0.4)
+        const x0 = Math.max(Wh / 2 + 16, Math.min(cx, L - 40 - Wh / 2))
+        Object.assign(flipEl.style, { left: cx - Fw / 2 + 'px', top: cy - Fh / 2 + 'px', width: Fw + 'px', height: Fh + 'px' })
+        return { Fw, Fh, s0: Wh / Fw, dx0: x0 - cx, crop: Math.max(0, (Fh - r.w) / 2), bw: 1.5 * r.scale }
+      }
+      const paintFlip = () => {
+        fg = fg || flipGeo()
+        const t = fl.t
+        const s = fg.s0 + (1 - fg.s0) * t
+        const r0 = 0.03 * fg.s0 * fg.Fw // on-screen corner radius: a card's own at first, HERO_RADIUS when standing
+        gsap.set(flipEl, { x: fg.dx0 * (1 - t), scale: s, rotation: 90 * t })
+        gsap.set(flipIn, { height: fg.Fh - 2 * fg.crop * t, borderRadius: `${(r0 + (HERO_RADIUS - r0) * t) / s}px`, borderWidth: fg.bw / s })
+        gsap.set(flipClean, { opacity: Math.min(1, Math.max(0, (t - 0.12) / 0.4)) })
+      }
+      const prevRefresh = onRefresh
+      onRefresh = () => { prevRefresh(); fg = null }
+      ScrollTrigger.addEventListener('refreshInit', onRefresh)
+      ScrollTrigger.removeEventListener('refreshInit', prevRefresh)
+      const onRefreshed = () => paintFlip() // the flat card's box follows the layout after a resize
+      ScrollTrigger.addEventListener('refresh', onRefreshed)
+      const prevCleanup = cleanup
+      cleanup = () => { prevCleanup(); ScrollTrigger.removeEventListener('refresh', onRefreshed) }
+      paintFlip()
+      const intro = gsap.timeline({ defaults: { ease: 'sine.inOut', force3D: true } })
+      intro.set(frameEl, { autoAlpha: 0 }, 0)
+      intro.set(flipEl, { autoAlpha: 1 }, 0)
+      intro.to(fl, { t: 1, duration: INTRO, ease: 'power2.inOut', onUpdate: paintFlip }, 0)
+      intro.set(flipEl, { autoAlpha: 0 }, INTRO)
+      intro.set(frameEl, { autoAlpha: 1 }, INTRO)
+      outer.add(intro, 0).add(tl, INTRO)
     }, stage)
     // The animation measures the middle card's place once per refresh. The text above it changes height when the font arrives (or
     // when the copy wraps differently), which moves the card; measure again then, so the photo and the card keep landing together.
@@ -403,8 +463,15 @@ export default function Hero() {
           <WaveGlow />
         </div>
 
+        {/* desktop: the flat card that opens the hero and turns upright with the first scroll (placed and turned by the timeline) */}
+        <div className="rv-flip" aria-hidden="true">
+          <div className="rv-flip-in"><FlatCard /></div>
+        </div>
+
         {/* phones: the big outlined card stays put on the blue hero (desktop animates the one inside the middle card) */}
         <div className="rv-hero-card" aria-hidden="true">
+          {/* phones: the flat card shows first and turns upright by itself, then the standing card takes its place */}
+          <div className="rv-hero-flip"><div className="rv-flip-in"><FlatCard /></div></div>
           <div className="rv-hero-card-in">
             <BankCard />
             <div className="rv-hero-foot">
