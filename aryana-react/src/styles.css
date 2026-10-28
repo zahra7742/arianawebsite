@@ -5017,6 +5017,32 @@ img.gl-wm {
     min-height: 170px;
     margin: 0;
   }
+  .opt-feat-box.shutter { /* roller shutter: the whole box (its panel too) unrolls from the top down; the panel is a layer of its own, so the box itself is never clipped and still counts as "in view" */
+    background: none;
+  }
+  .opt-feat-box.shutter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 10px;
+    background: #f2f4f8;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.9s cubic-bezier(0.3, 0.6, 0.3, 1);
+  }
+  .opt-feat-box.shutter.open::before {
+    transform: scaleY(1);
+  }
+  .opt-feat-box.shutter > * {
+    opacity: 0;
+    translate: 0 -14px;
+    transition: opacity 0.6s 0.35s, translate 0.7s 0.35s cubic-bezier(0.3, 0.6, 0.3, 1);
+  }
+  .opt-feat-box.shutter.open > * {
+    opacity: 1;
+    translate: 0 0;
+  }
   .opt-cards {
     grid-template-columns: 1fr;
   }
@@ -5060,5 +5086,88 @@ img.gl-wm {
   }
   .opt-services {
     padding-block: 48px 56px;
+  }
+}
+@media (max-width: 560px) { /* phones */
+  .opt-hero h1 { /* may wrap on a narrow screen instead of running past the edge */
+    white-space: normal;
+    font-size: 24px;
+    text-wrap: balance;
+  }
+  .opt-hero-tiles { /* the phone on top, the two cards side by side under it */
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 12px;
+  }
+  .opt-tile-phone {
+    grid-column: 1 / -1;
+  }
+  .opt-tile-card img,
+  .opt-tile-back {
+    max-width: 100%;
+  }
+  .opt-tile-card:first-child img {
+    transform: perspective(700px) rotateY(-18deg) rotateZ(-2deg);
+  }
+  .opt-tile-card:last-child .opt-tile-back {
+    transform: perspective(700px) rotateY(18deg) rotateZ(2deg);
+  }
+  .opt-tile figcaption {
+    font-size: 12px;
+  }
+  .opt-about {
+    gap: 20px;
+  }
+  .opt-cards-art {
+    height: 250px;
+  }
+  .opt-flip {
+    width: 68%;
+  }
+  .opt-flip-front {
+    bottom: 20px;
+    inset-inline-start: 2%;
+  }
+  .opt-flip-rear {
+    top: 20px;
+    inset-inline-end: 2%;
+  }
+  .opt-story-list li {
+    align-items: flex-start;
+    font-size: 14px;
+  }
+  .opt-feat {
+    margin-top: 48px;
+  }
+  .opt-feat-text h2 {
+    font-size: 21px;
+  }
+  .opt-feat-phone {
+    width: 190px;
+  }
+  .opt-feat-side {
+    grid-template-columns: 1fr; /* one box per row: five boxes do not split into two columns evenly */
+    gap: 12px;
+  }
+  .opt-feat-stage {
+    gap: 12px;
+  }
+  .opt-feat-side .opt-feat-box:nth-child(n) {
+    min-height: 0;
+  }
+  .opt-feat-box p {
+    align-self: start;
+  }
+  .opt-services-head {
+    gap: 12px;
+  }
+  .opt-services-side .opt-pill-btn {
+    display: flex;
+    width: 100%;
+  }
+  .opt-card-art {
+    height: 190px;
+  }
+  .opt-card-phone .opt-phone {
+    width: 120px;
   }
 }

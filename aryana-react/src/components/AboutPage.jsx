@@ -138,6 +138,18 @@ export default function AboutPage() {
       if (!frame) frame = requestAnimationFrame(update)
     }
     const onResize = () => { measure(); request() }
+    // on a phone the boxes open like a roller shutter, one after the other, as they come into view (the CSS only hides them under 980px)
+    let shutter = null
+    if (!still.matches && 'IntersectionObserver' in window) {
+      shutter = new IntersectionObserver((entries) => {
+        // it opens when a quarter of the box is in view and closes again once it has left the screen completely, so it plays on every pass (up or down)
+        entries.forEach((entry) => {
+          if (entry.intersectionRatio >= 0.25) entry.target.classList.add('open')
+          else if (!entry.isIntersecting) entry.target.classList.remove('open')
+        })
+      }, { threshold: [0, 0.25] })
+      boxes.forEach((box) => { box.classList.add('shutter'); shutter.observe(box) })
+    }
     measure()
     request()
     shown = target
@@ -146,6 +158,7 @@ export default function AboutPage() {
     window.addEventListener('resize', onResize)
     return () => {
       cancelAnimationFrame(frame)
+      shutter?.disconnect()
       window.removeEventListener('scroll', request)
       window.removeEventListener('resize', onResize)
     }
