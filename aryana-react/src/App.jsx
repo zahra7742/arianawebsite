@@ -13,9 +13,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useReveal from './hooks/useReveal.js'
 import useRoute from './hooks/useRoute.js'
 import AboutPage from './components/AboutPage.jsx'
+import ArticlesPage from './components/ArticlesPage.jsx'
+import ArticlePage from './components/ArticlePage.jsx'
 
 export default function App() {
-  const route = useRoute()
+  const { route, slug } = useRoute()
   useReveal(route)
 
   // the pinned sections measure the page once; after the window is resized (or the device mode is changed in the
@@ -31,7 +33,7 @@ export default function App() {
   return (
     <>
       <Header key={route} route={route} />
-      {route === 'about' ? <AboutPage /> : (
+      {route === 'about' ? <AboutPage /> : route === 'articles' ? <ArticlesPage /> : route === 'article' ? <ArticlePage slug={slug} /> : (
         <main>
           <Hero />
           <Goals />

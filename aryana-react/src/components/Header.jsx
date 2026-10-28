@@ -6,7 +6,7 @@ import { navLinks } from '../data/content.js'
 
 const navHrefs = navLinks.map(l => l.href)
 
-// route: 'home' | 'about'. On the About page there is no hero photo under the header, so it is the plain white one.
+// route: 'home' | 'about' | 'articles' | 'article'. On the inner pages there is no hero photo under the header, so it is the plain white one.
 export default function Header({ route = 'home' }) {
   const [open, setOpen] = useState(false)
   // at the very top the header shares the hero's blue; it turns white as soon as the page scrolls
@@ -22,7 +22,7 @@ export default function Header({ route = 'home' }) {
     }
   }, [route])
   const sectionActive = useActiveSection(navHrefs, '#top')
-  const active = route === 'about' ? '#/about' : sectionActive
+  const active = route === 'about' ? '#/about' : route === 'articles' || route === 'article' ? '#/articles' : sectionActive
 
   return (
     <header className={onHero ? 'site-header on-hero' : 'site-header'} id="top">

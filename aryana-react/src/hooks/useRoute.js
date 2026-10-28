@@ -1,21 +1,30 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// The site is one page plus an "About us" page. There is no router library: the page is chosen by the hash,
-// "#/about" shows the About page and anything else (#faq, #app, #top, nothing) shows the home page.
-const read = () => (window.location.hash.startsWith('#/about') ? 'about' : 'home')
+// The site is one page plus a few inner pages. There is no router library: the page is chosen by the hash,
+// "#/about" shows the About page, "#/articles" the list of articles, "#/articles/<id>" one article, and anything else
+// (#faq, #app, #top, nothing) shows the home page. The hook returns { route, slug }.
+const read = () => {
+  const hash = decodeURIComponent(window.location.hash)
+  if (hash.startsWith('#/about')) return { route: 'about', slug: '' }
+  const m = hash.match(/^#\/articles(?:\/([^/?#]+))?/)
+  if (m) return { route: m[1] ? 'article' : 'articles', slug: m[1] || '' }
+  return { route: 'home', slug: '' }
+}
 
 export default function useRoute() {
-  const [route, setRoute] = useState(read)
+  const [page, setPage] = useState(read)
+  const { route, slug } = page
   const previous = useRef(route)
+  const previousSlug = useRef(slug)
   const didFirst = useRef(false)
 
   useEffect(() => {
     // the home page is built (and its pinned hero measured) from the top, so a page change always starts there
     const onHash = () => {
       const next = read()
-      if (next !== previous.current) window.scrollTo({ top: 0, behavior: 'instant' })
-      setRoute(next)
+      if (next.route !== previous.current || next.slug !== previousSlug.current) window.scrollTo({ top: 0, behavior: 'instant' })
+      setPage(next)
     }
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
@@ -27,8 +36,9 @@ export default function useRoute() {
   useLayoutEffect(() => {
     const changed = previous.current !== route
     previous.current = route
-    if (!changed && (didFirst.current || route === 'about')) return
-    if (route === 'about') { didFirst.current = true; window.scrollTo({ top: 0, behavior: 'instant' }); return }
+    previousSlug.current = slug
+    if (!changed && (didFirst.current || route !== 'home')) return
+    if (route !== 'home') { didFirst.current = true; window.scrollTo({ top: 0, behavior: 'instant' }); return }
     const id = decodeURIComponent(window.location.hash.slice(1))
     const t = setTimeout(() => {
       didFirst.current = true
@@ -38,7 +48,7 @@ export default function useRoute() {
       else if (changed) window.scrollTo({ top: 0, behavior: 'instant' })
     }, 120)
     return () => clearTimeout(t)
-  }, [route])
+  }, [route, slug])
 
-  return route
+  return page
 }
